@@ -31,6 +31,17 @@ public class DisplayObject {
 	/* Degrees to rotate object */
 	private int rotation;
 
+	/* True if display object is meant to be drawn */
+    private Boolean visible;
+
+    /* How transparent object is */
+    private Float alpha;
+    private Float oldAlpha;
+
+    /* Scales image up or down */
+    private Double scaleX;
+    private Double scaleY;
+
 	/**
 	 * Constructors: can pass in the id OR the id and image's file path and
 	 * position OR the id and a buffered image and position
