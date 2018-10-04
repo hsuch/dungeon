@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.Point;
-
+import java.awt.AlphaComposite;
 import javax.imageio.ImageIO;
 
 /**
@@ -56,6 +56,12 @@ public class DisplayObject {
 		this.setPosition(new Point());
 		this.setPivotPoint(new Point());
 		this.setRotation(0);
+		this.setVisible(true);
+		this.setAlpha(1.0f);
+		this.setOldAlpha(0.0f);
+		this.setScaleX(1.0);
+		this.setScaleY(1.0);
+
 	}
 
 	public void setId(String id) {
@@ -106,6 +112,26 @@ public class DisplayObject {
 	public void setRotation(int r) {
 		this.rotation = r;
 	}
+
+	public void setVisible(Boolean v) { this.visible = v; }
+
+	public Boolean getVisible() { return this.visible; }
+
+	public void setAlpha(Float a) { this.alpha = a; }
+
+	public void setOldAlpha(Float oa) { this.oldAlpha = oa; }
+
+	public Float getAlpha() { return this.alpha; }
+
+	public Float getOldAlpha() { return this.oldAlpha; }
+
+	public void setScaleX(Double x) { this.scaleX = x; }
+
+	public void setScaleY(Double y) { this.scaleY = y; }
+
+	public Double getScaleX() { return this.scaleX; }
+
+	public Double getScaleY() { return this.scaleY; }
 
 	public BufferedImage getDisplayImage() {
 		return this.displayImage;
@@ -189,10 +215,17 @@ public class DisplayObject {
 	protected void applyTransformations(Graphics2D g2d) {
 		g2d.translate(this.position.x, this.position.y);
 		g2d.rotate(Math.toRadians(this.rotation), this.pivotPoint.x, this.pivotPoint.y);
-		//g2d.scale(this.scaleX, this.scaleY);
-		//float curAlpha;
-		//this.oldAlpha = curAlpha = ((AlphaComposite) g2d.getComposite()).getAlpha();
-		//g2d.setComposite(AlphaComposite.getInstance(3, curAlpha * this.alpha));
+		g2d.scale(this.scaleX, this.scaleY);
+		float curAlpha;
+		this.oldAlpha = curAlpha = ((AlphaComposite) g2d.getComposite()).getAlpha();
+		int isVisible;
+		if (this.getVisible()){
+		    isVisible = 1;
+        }
+        else {
+            isVisible = 0;
+        }
+		g2d.setComposite(AlphaComposite.getInstance(3, curAlpha * this.alpha * isVisible));
 	}
 
 	/**
@@ -202,7 +235,7 @@ public class DisplayObject {
 	protected void reverseTransformations(Graphics2D g2d) {
 		g2d.translate(0,0);
 		g2d.rotate(0);
-		//g2d.setComposite(AlphaComposite.getInstance(3, this.oldAlpha));
+		g2d.setComposite(AlphaComposite.getInstance(3, this.oldAlpha));
 	}
 
 }
