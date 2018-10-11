@@ -3,7 +3,7 @@ package edu.virginia.engine.display;
 import java.util.ArrayList;
 import edu.virginia.engine.util.GameClock;
 
-public class AnimatedSprite {
+public class AnimatedSprite extends Sprite {
     private ArrayList<Animation> animations;
 
     private Boolean playing;
