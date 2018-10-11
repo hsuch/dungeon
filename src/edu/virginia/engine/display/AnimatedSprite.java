@@ -68,9 +68,10 @@ public class AnimatedSprite extends Sprite {
         this.animate(anim);
     }
 
-    public void animate(int startFrame, int endFrame){
+    public void animate(int startFrame, int endFrame) {
         this.startFrame = startFrame;
         this.endFrame = endFrame;
+    }
 
     public void setAnimations(ArrayList<Animation> animations) {
         this.animations = animations;
@@ -82,7 +83,9 @@ public class AnimatedSprite extends Sprite {
 
     public void draw() {
         if (this.animationSpeed >= this.gameClock.getElapsedTime()) {
-            
+            String animationId = this.frames.get(this.currentFrame);
+            this.currentFrame += 1;
+            this.gameClock.resetGameClock();
         }
     }
 }
