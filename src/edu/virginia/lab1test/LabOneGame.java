@@ -74,13 +74,25 @@ public class LabOneGame extends Game{
 		}
 		if(pressedKeys.contains(KeyEvent.VK_Q)) {
 					mario.setRotation(mario.getRotation() - 10);
-				}
-        if(pressedKeys.contains(KeyEvent.VK_V)) {
-            if(mario.getVisible()) {
+		}
+        if (pressedKeys.contains(KeyEvent.VK_V)) {
+            if (mario.getVisible()) {
                 mario.setVisible(false);
+				try {
+					Thread.sleep(200);
+				}
+				catch (InterruptedException e){
+					assert false;
+				}
             }
-            else{
+            else {
                 mario.setVisible(true);
+                try {
+                    Thread.sleep(200);
+                }
+                catch (InterruptedException e){
+                    assert false;
+                }
             }
         }
         if(pressedKeys.contains(KeyEvent.VK_Z)) {

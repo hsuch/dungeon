@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.awt.Point;
 import java.awt.AlphaComposite;
 import javax.imageio.ImageIO;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A very basic display object for a java based gaming engine
@@ -185,9 +186,9 @@ public class DisplayObject {
 	 * every frame.
 	 * */
 	public void draw(Graphics g) {
-		
+
 		if (displayImage != null) {
-			
+
 			/*
 			 * Get the graphics and apply this objects transformations
 			 * (rotation, etc.)
@@ -195,16 +196,19 @@ public class DisplayObject {
 			Graphics2D g2d = (Graphics2D) g;
 			applyTransformations(g2d);
 
-			/* Actually draw the image, perform the pivot point translation here */
-			g2d.drawImage(displayImage, 0, 0,
-					(int) (getUnscaledWidth()),
-					(int) (getUnscaledHeight()), null);
-			
-			/*
-			 * undo the transformations so this doesn't affect other display
-			 * objects
-			 */
-			reverseTransformations(g2d);
+			if (this.visible) {
+                /* Actually draw the image, perform the pivot point translation here */
+                g2d.drawImage(displayImage, 0, 0,
+                        (int) (getUnscaledWidth()),
+                        (int) (getUnscaledHeight()), null);
+
+                /*
+                 * undo the transformations so this doesn't affect other display
+                 * objects
+                 */
+                reverseTransformations(g2d);
+
+            }
 		}
 	}
 
@@ -218,14 +222,7 @@ public class DisplayObject {
 		g2d.scale(this.scaleX, this.scaleY);
 		float curAlpha;
 		this.oldAlpha = curAlpha = ((AlphaComposite) g2d.getComposite()).getAlpha();
-		int isVisible;
-		if (this.getVisible()){
-		    isVisible = 1;
-        }
-        else {
-            isVisible = 0;
-        }
-		g2d.setComposite(AlphaComposite.getInstance(3, curAlpha * this.alpha * isVisible));
+		g2d.setComposite(AlphaComposite.getInstance(3, curAlpha * this.alpha));
 	}
 
 	/**
