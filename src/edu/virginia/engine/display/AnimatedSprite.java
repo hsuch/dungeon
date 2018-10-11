@@ -26,9 +26,8 @@ public class AnimatedSprite extends Sprite {
 
     private GameClock gameClock;
 
-    public AnimatedSprite(String id, String fileName, Point position) {
+    public AnimatedSprite(String id, Point position) {
         super(id);
-        this.fileName = fileName;
         this.animationSpeed = DEFAULT_ANIMATION_SPEED;
         this.gameClock = new GameClock();
         this.playing = true;
