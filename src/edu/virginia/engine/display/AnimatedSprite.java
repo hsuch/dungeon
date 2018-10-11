@@ -74,6 +74,14 @@ public class AnimatedSprite extends Sprite {
         this.endFrame = endFrame;
     }
 
+    public void stopAnimation(int frameNumber) {
+        
+    }
+
+    public void stopAnimation() {
+        this.stopAnimation(0);
+    }
+
     public void setAnimations(ArrayList<Animation> animations) {
         this.animations = animations;
     }
