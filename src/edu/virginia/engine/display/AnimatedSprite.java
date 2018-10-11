@@ -36,4 +36,6 @@ public class AnimatedSprite extends Sprite {
         this.animationSpeed = 10; // idk just a number lol
         this.gameClock = new GameClock();
     }
+
+    public setA
 }

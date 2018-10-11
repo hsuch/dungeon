@@ -39,5 +39,8 @@ public class Animation {
         this.endFrame = endFrame;
     }
 
+    public String getFileName(){
+        return this.fileName;
+    }
 
 }
