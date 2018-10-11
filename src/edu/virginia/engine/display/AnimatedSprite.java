@@ -97,12 +97,19 @@ public class AnimatedSprite extends Sprite {
         this.animationSpeed = animationSpeed;
     }
 
-    public void draw() {
+    public void draw(Graphics g) {
         if (this.animationSpeed >= this.gameClock.getElapsedTime()) {
+            if(this.currentFrame > (this.frames.size() - 1)) {
+                this.currentFrame = 0;
+            }
             String animationId = this.frames.get(this.currentFrame);
+            BufferedImage new_image = readImage(animationId);
+            setImage(new_image);
             this.currentFrame += 1;
             this.gameClock.resetGameClock();
         }
+
+        super.draw(g);
     }
 }
 
