@@ -71,6 +71,19 @@ public class AnimatedSprite extends Sprite {
     public void animate(int startFrame, int endFrame){
         this.startFrame = startFrame;
         this.endFrame = endFrame;
+
+    public void setAnimations(ArrayList<Animation> animations) {
+        this.animations = animations;
+    }
+
+    public void setAnimationSpeed(Integer animationSpeed) {
+        this.animationSpeed = animationSpeed;
+    }
+
+    public void draw() {
+        if (this.animationSpeed >= this.gameClock.getElapsedTime()) {
+            
+        }
     }
 }
 
