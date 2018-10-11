@@ -73,7 +73,7 @@ public class LabOneGame extends Game{
 			mario.setRotation(mario.getRotation() + 10);
 		}
 		if(pressedKeys.contains(KeyEvent.VK_Q)) {
-					mario.setRotation(mario.getRotation() - 10);
+			mario.setRotation(mario.getRotation() - 10);
 		}
         if (pressedKeys.contains(KeyEvent.VK_V)) {
             if (mario.getVisible()) {
