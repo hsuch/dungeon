@@ -49,6 +49,14 @@ public class DisplayObject {
 	 */
 	public DisplayObject(String id) {
 		this.setId(id);
+		this.setPosition(new Point());
+		this.setPivotPoint(new Point());
+		this.setRotation(0);
+		this.setVisible(true);
+		this.setAlpha(1.0f);
+		this.setOldAlpha(0.0f);
+		this.setScaleX(1.0);
+		this.setScaleY(1.0);
 	}
 
 	public DisplayObject(String id, String fileName) {

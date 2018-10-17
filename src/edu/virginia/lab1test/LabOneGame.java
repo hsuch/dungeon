@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import edu.virginia.engine.display.AnimatedSprite;
 import edu.virginia.engine.display.Game;
 import edu.virginia.engine.display.Sprite;
 
@@ -15,7 +16,7 @@ import edu.virginia.engine.display.Sprite;
 public class LabOneGame extends Game{
 
 	/* Create a sprite object for our game. We'll use mario */
-	Sprite mario = new Sprite("Mario", "Mario.png");
+	AnimatedSprite mario = new AnimatedSprite("Mario", new Point(0,0));
 	
 	/**
 	 * Constructor. See constructor in Game.java for details on the parameters given
@@ -129,7 +130,7 @@ public class LabOneGame extends Game{
 		super.draw(g);
 		
 		/* Same, just check for null in case a frame gets thrown in before Mario is initialized */
-		if(mario != null) mario.draw(g);
+		if(mario != null) mario.drawAnimation(g);
 	}
 
 	/**
