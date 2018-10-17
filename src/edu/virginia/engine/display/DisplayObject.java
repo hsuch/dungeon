@@ -43,6 +43,10 @@ public class DisplayObject {
     private Double scaleX;
     private Double scaleY;
 
+    private Boolean isAnimated;
+
+    private String transform;
+
 	/**
 	 * Constructors: can pass in the id OR the id and image's file path and
 	 * position OR the id and a buffered image and position
@@ -57,6 +61,8 @@ public class DisplayObject {
 		this.setOldAlpha(0.0f);
 		this.setScaleX(1.0);
 		this.setScaleY(1.0);
+		this.setIsAnimated(true);
+		this.setTransform("bird");
 	}
 
 	public DisplayObject(String id, String fileName) {
@@ -70,7 +76,8 @@ public class DisplayObject {
 		this.setOldAlpha(0.0f);
 		this.setScaleX(1.0);
 		this.setScaleY(1.0);
-
+        this.setIsAnimated(true);
+        this.setTransform("bird");
 	}
 
 	public void setId(String id) {
@@ -141,6 +148,14 @@ public class DisplayObject {
 	public Double getScaleX() { return this.scaleX; }
 
 	public Double getScaleY() { return this.scaleY; }
+
+	public void setTransform(String s) { this.transform = s; }
+
+	public String getTransform() { return this.transform; }
+
+	public void setIsAnimated(Boolean b) { this.isAnimated = b; }
+
+	public Boolean getIsAnimated() { return this.isAnimated; }
 
 	public BufferedImage getDisplayImage() {
 		return this.displayImage;

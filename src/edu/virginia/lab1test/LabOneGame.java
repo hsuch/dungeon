@@ -17,7 +17,7 @@ public class LabOneGame extends Game{
 
 	/* Create a sprite object for our game. We'll use mario */
 	AnimatedSprite mario = new AnimatedSprite("Mario", new Point(0,0));
-	
+
 	/**
 	 * Constructor. See constructor in Game.java for details on the parameters given
 	 * */
@@ -32,7 +32,7 @@ public class LabOneGame extends Game{
 	@Override
 	public void update(ArrayList<Integer> pressedKeys){
 		super.update(pressedKeys);
-		
+
 		/* Make sure mario is not null. Sometimes Swing can auto cause an extra frame to go before everything is initialized */
 		if(mario != null) mario.update(pressedKeys);
 
@@ -52,7 +52,50 @@ public class LabOneGame extends Game{
 			mario.setPosition(new Point(mario.getPosition().x + 5,
 					mario.getPosition().y));
 		}
-
+        if(pressedKeys.contains(KeyEvent.VK_U)) {
+            if(mario.getIsAnimated()) {
+                mario.stopAnimation();
+                mario.setIsAnimated(false);
+                try {
+                    Thread.sleep(200);
+                }
+                catch (InterruptedException e){
+                    assert false;
+                }
+            }
+            else {
+                mario.animate(mario.getTransform());
+                mario.setIsAnimated(true);
+                try {
+                    Thread.sleep(200);
+                }
+                catch (InterruptedException e){
+                    assert false;
+                }
+            }
+        }
+        if(pressedKeys.contains(KeyEvent.VK_T)) {
+            if(mario.getTransform() == "bird") {
+                mario.animate("mariospin");
+                mario.setTransform("mariospin");
+                try {
+                    Thread.sleep(200);
+                }
+                catch (InterruptedException e){
+                    assert false;
+                }
+            }
+            else {
+                mario.animate("bird");
+                mario.setTransform("bird");
+                try {
+                    Thread.sleep(200);
+                }
+                catch (InterruptedException e){
+                    assert false;
+                }
+            }
+        }
 		if(pressedKeys.contains(KeyEvent.VK_I)) {
 			mario.setPivotPoint(new Point(mario.getPivotPoint().x - 5,
 					mario.getPivotPoint().y));

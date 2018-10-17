@@ -110,7 +110,7 @@ public class AnimatedSprite extends Sprite {
 
     public void drawAnimation(Graphics g) {
         if ((this.animationSpeed <= this.gameClock.getElapsedTime()) && this.playing) {
-            if(this.currentFrame == this.endFrame) {
+            if(this.currentFrame >= this.endFrame) {
                 this.currentFrame = this.startFrame;
             }
             else {
