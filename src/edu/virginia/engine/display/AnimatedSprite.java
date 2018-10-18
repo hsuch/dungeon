@@ -40,7 +40,6 @@ public class AnimatedSprite extends Sprite {
         // Initialize animations
         this.animations.add(new Animation("bird", 0, 7));
         this.animations.add(new Animation("mariospin", 8, 10));
-        this.animate("bird");
     }
 
     public void initGameClock() {
@@ -106,6 +105,10 @@ public class AnimatedSprite extends Sprite {
 
     public void setAnimationSpeed(Integer animationSpeed) {
         this.animationSpeed = animationSpeed;
+    }
+
+    public Integer getAnimationSpeed() {
+        return this.animationSpeed;
     }
 
     public void drawAnimation(Graphics g) {

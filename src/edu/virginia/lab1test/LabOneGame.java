@@ -39,18 +39,42 @@ public class LabOneGame extends Game{
 		if (pressedKeys.contains(KeyEvent.VK_UP)){
 			mario.setPosition(new Point(mario.getPosition().x,
 					mario.getPosition().y - 5));
+			if(mario.getTransform() == "bird") {
+                mario.animate("bird");
+            }
+            else {
+                mario.animate("mariospin");
+            }
 		}
 		if (pressedKeys.contains(KeyEvent.VK_DOWN)){
 			mario.setPosition(new Point(mario.getPosition().x,
 					mario.getPosition().y + 5));
+            if(mario.getTransform() == "bird") {
+                mario.animate("bird");
+            }
+            else {
+                mario.animate("mariospin");
+            }
 		}
 		if (pressedKeys.contains(KeyEvent.VK_LEFT)){
 			mario.setPosition(new Point(mario.getPosition().x - 5,
 					mario.getPosition().y));
+            if(mario.getTransform() == "bird") {
+                mario.animate("bird");
+            }
+            else {
+                mario.animate("mariospin");
+            }
 		}
 		if (pressedKeys.contains(KeyEvent.VK_RIGHT)){
 			mario.setPosition(new Point(mario.getPosition().x + 5,
 					mario.getPosition().y));
+            if(mario.getTransform() == "bird") {
+                mario.animate("bird");
+            }
+            else {
+                mario.animate("mariospin");
+            }
 		}
         if(pressedKeys.contains(KeyEvent.VK_U)) {
             if(mario.getIsAnimated()) {
@@ -76,8 +100,8 @@ public class LabOneGame extends Game{
         }
         if(pressedKeys.contains(KeyEvent.VK_T)) {
             if(mario.getTransform() == "bird") {
-                mario.animate("mariospin");
                 mario.setTransform("mariospin");
+                mario.animate("mariospin");
                 try {
                     Thread.sleep(200);
                 }
@@ -86,31 +110,66 @@ public class LabOneGame extends Game{
                 }
             }
             else {
-                mario.animate("bird");
                 mario.setTransform("bird");
+                mario.animate("bird");
                 try {
                     Thread.sleep(200);
+
                 }
                 catch (InterruptedException e){
                     assert false;
                 }
             }
         }
+        if(pressedKeys.contains(KeyEvent.VK_M)) {
+            if(mario.getAnimationSpeed() >= 0) {
+                mario.setAnimationSpeed(mario.getAnimationSpeed()-5);
+            }
+        }
+        if(pressedKeys.contains(KeyEvent.VK_N)) {
+            if (mario.getAnimationSpeed() <= 100) {
+                mario.setAnimationSpeed(mario.getAnimationSpeed() + 5);
+            }
+        }
 		if(pressedKeys.contains(KeyEvent.VK_I)) {
 			mario.setPivotPoint(new Point(mario.getPivotPoint().x - 5,
 					mario.getPivotPoint().y));
+            if(mario.getTransform() == "bird") {
+                mario.animate("bird");
+            }
+            else {
+                mario.animate("mariospin");
+            }
 		}
 		if(pressedKeys.contains(KeyEvent.VK_K)){
 			mario.setPivotPoint(new Point(mario.getPivotPoint().x + 5,
 					mario.getPivotPoint().y));
+            if(mario.getTransform() == "bird") {
+                mario.animate("bird");
+            }
+            else {
+                mario.animate("mariospin");
+            }
 		}
 		if(pressedKeys.contains(KeyEvent.VK_J)){
 			mario.setPivotPoint(new Point(mario.getPivotPoint().x,
 					mario.getPivotPoint().y - 5));
+            if(mario.getTransform() == "bird") {
+                mario.animate("bird");
+            }
+            else {
+                mario.animate("mariospin");
+            }
 		}
 		if(pressedKeys.contains(KeyEvent.VK_L)){
 			mario.setPivotPoint(new Point(mario.getPivotPoint().x,
 					mario.getPivotPoint().y + 5));
+            if(mario.getTransform() == "bird") {
+                mario.animate("bird");
+            }
+            else {
+                mario.animate("mariospin");
+            }
 		}
 
 		if(pressedKeys.contains(KeyEvent.VK_W)) {
