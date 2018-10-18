@@ -17,6 +17,8 @@ import java.util.concurrent.TimeUnit;
  * */
 public class DisplayObject {
 
+	private DisplayObject parent;
+
 	/* All DisplayObject have a unique id */
 	private String id;
 
@@ -105,9 +107,11 @@ public class DisplayObject {
 	/**
 	 * Other getters and setters
 	 */
-	public Point getPosition() {
-		return this.position;
-	}
+	public DisplayObject getParent() { return this.parent; }
+
+	public void setParent(DisplayObject parent) { this.parent=parent; }
+
+	public Point getPosition() { return this.position; }
 
 	public void setPosition(Point p) {
 		this.position = p;
@@ -256,6 +260,26 @@ public class DisplayObject {
 		g2d.translate(0,0);
 		g2d.rotate(0);
 		g2d.setComposite(AlphaComposite.getInstance(3, this.oldAlpha));
+	}
+
+	protected Point convertToGlobal(Point local){
+		if (this.getParent() == null) {
+			return local;
+		}
+		else {
+			return new Point(local.x + convertToGlobal(this.parent.getPosition()).x,
+					local.y + convertToGlobal(this.parent.getPosition()).y);
+		}
+	}
+
+	protected Point convertToLocal(Point global){
+		if (this.getParent() == null) {
+			return global;
+		}
+		else {
+			return new Point(global.x - convertToGlobal(this.getParent().getPosition()).x,
+					global.y - convertToGlobal(this.getParent().getPosition()).y);
+		}
 	}
 
 }
