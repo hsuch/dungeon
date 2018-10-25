@@ -4,10 +4,9 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import edu.virginia.engine.display.AnimatedSprite;
-import edu.virginia.engine.display.Game;
-import edu.virginia.engine.display.Sprite;
+import edu.virginia.engine.display.*;
 
 /**
  * Example game that utilizes our engine. We can create a simple prototype game with just a couple lines of code
@@ -16,13 +15,26 @@ import edu.virginia.engine.display.Sprite;
 public class LabOneGame extends Game{
 
 	/* Create a sprite object for our game. We'll use mario */
-	AnimatedSprite mario = new AnimatedSprite("Mario", new Point(0,0));
+	//AnimatedSprite mario = new AnimatedSprite("Mario", new Point(0,0));
+    /* Lab 3 code - initialize a sun and solar system */
+    Sprite moon1 = new Sprite("moon1","planets/3.png", new ArrayList<DisplayObject>());
+    Sprite planet1 = new Sprite("planet1", "planets/1.png", new ArrayList<DisplayObject>(Arrays.asList(moon1)));
+    Sprite planet2 = new Sprite("planet2", "planets/2.png", new ArrayList<DisplayObject>());
+    ArrayList<DisplayObject> planets = new ArrayList<DisplayObject>(Arrays.asList(planet1, planet2));
+    Sprite sun = new Sprite("sun", "planets/12.png", planets);
+
 
 	/**
 	 * Constructor. See constructor in Game.java for details on the parameters given
 	 * */
 	public LabOneGame() {
-		super("Lab One Test Game", 500, 300);
+	    super("Lab One Test Game",500, 300);
+	    sun.setPosition(new Point(200, 100));
+        sun.getChild("planet1").setPosition(new Point(50, 50));
+        sun.getChild("planet1").setScaleX(.5);
+        sun.getChild("planet1").setScaleY(.5);
+        sun.getChild("planet2").setScaleX(.7);
+        sun.getChild("planet2").setScaleY(.7);
 	}
 	
 	/**
@@ -32,8 +44,13 @@ public class LabOneGame extends Game{
 	@Override
 	public void update(ArrayList<Integer> pressedKeys){
 		super.update(pressedKeys);
+		sun.getChild("planet1").setRotation(sun.getChild("planet1").getRotation() + 1);
+        sun.getChild("planet2").setRotation(sun.getChild("planet2").getRotation() + 3);
+
 
 		/* Make sure mario is not null. Sometimes Swing can auto cause an extra frame to go before everything is initialized */
+
+        /*
 		if(mario != null) mario.update(pressedKeys);
 
 		if (pressedKeys.contains(KeyEvent.VK_UP)){
@@ -219,7 +236,7 @@ public class LabOneGame extends Game{
                 mario.setScaleX(mario.getScaleX() - 0.1);
                 mario.setScaleY(mario.getScaleY() - 0.1);
             }
-        }
+        }*/
 
 	}
 	
@@ -232,7 +249,7 @@ public class LabOneGame extends Game{
 		super.draw(g);
 		
 		/* Same, just check for null in case a frame gets thrown in before Mario is initialized */
-		if(mario != null) mario.drawAnimation(g);
+		if(sun != null) sun.draw(g);
 	}
 
 	/**

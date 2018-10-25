@@ -6,6 +6,11 @@ import java.util.ArrayList;
 public class DisplayObjectContainer extends DisplayObject{
     ArrayList<DisplayObject> displayObjects = new ArrayList<DisplayObject>();
 
+    public DisplayObjectContainer(String id, String fileName, ArrayList<DisplayObject> displayObjects) {
+        super(id, fileName);
+        this.displayObjects = displayObjects;
+    }
+
     public DisplayObjectContainer(String id, ArrayList<DisplayObject> displayObjects) {
         super(id);
         this.displayObjects = displayObjects;

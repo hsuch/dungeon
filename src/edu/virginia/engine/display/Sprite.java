@@ -8,12 +8,12 @@ import java.util.ArrayList;
  * */
 public class Sprite extends DisplayObjectContainer {
 
-	public Sprite(String id) {
-		super(id);
+	public Sprite(String id, String imageFileName, ArrayList<DisplayObject> objects) {
+		super(id, imageFileName, objects);
 	}
 
-	public Sprite(String id, String imageFileName) {
-		super(id, imageFileName);
+	public Sprite(String id, ArrayList<DisplayObject> objects) {
+		super(id, objects);
 	}
 	
 	@Override

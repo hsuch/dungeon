@@ -34,7 +34,7 @@ public class Game extends DisplayObjectContainer implements ActionListener, KeyL
 	private GameScenePanel scenePanel;
 
 	public Game(String gameId, int width, int height) {
-		super(gameId);
+		super(gameId, new ArrayList<DisplayObject>());
 		
 		setUpMainFrame(gameId, width, height);
 		
