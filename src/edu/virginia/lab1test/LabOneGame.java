@@ -29,12 +29,13 @@ public class LabOneGame extends Game{
 	 * */
 	public LabOneGame() {
 	    super("Lab One Test Game",500, 300);
-	    sun.setPosition(new Point(200, 100));
+	    sun.setPosition(new Point (200, 100));
         sun.getChild("planet1").setPosition(new Point(50, 50));
-        sun.getChild("planet1").setScaleX(.5);
-        sun.getChild("planet1").setScaleY(.5);
-        sun.getChild("planet2").setScaleX(.7);
-        sun.getChild("planet2").setScaleY(.7);
+        planet1.getChild("moon1").setPosition(new Point(25, 25));
+        sun.getChild("planet1").setScaleX(1.0);
+        sun.getChild("planet1").setScaleY(1.0);
+        sun.getChild("planet2").setScaleX(2.0);
+        sun.getChild("planet2").setScaleY(2.0);
 	}
 	
 	/**
@@ -45,6 +46,7 @@ public class LabOneGame extends Game{
 	public void update(ArrayList<Integer> pressedKeys){
 		super.update(pressedKeys);
 		sun.getChild("planet1").setRotation(sun.getChild("planet1").getRotation() + 1);
+		//planet1.getChild("moon1").setRotation(planet1.getChild("moon1").getRotation() + 3);
         sun.getChild("planet2").setRotation(sun.getChild("planet2").getRotation() + 3);
 
 

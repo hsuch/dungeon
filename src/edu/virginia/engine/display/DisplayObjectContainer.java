@@ -64,11 +64,8 @@ public class DisplayObjectContainer extends DisplayObject{
 
     public void draw(Graphics g) {
         super.draw(g);
-        applyTransformations((Graphics2D) g);
 
         for (DisplayObject d: displayObjects) d.draw(g);
-
-        reverseTransformations((Graphics2D) g);
     }
 
 }
