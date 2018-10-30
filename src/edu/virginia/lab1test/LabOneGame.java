@@ -18,10 +18,9 @@ public class LabOneGame extends Game{
 	//AnimatedSprite mario = new AnimatedSprite("Mario", new Point(0,0));
     /* Lab 3 code - initialize a sun and solar system */
     Sprite moon1 = new Sprite("moon1","planets/3.png", new ArrayList<DisplayObject>());
-    Sprite planet1 = new Sprite("planet1", "planets/1.png", new ArrayList<DisplayObject>(Arrays.asList(moon1)));
+    Sprite planet1 = new Sprite("planet1", "planets/1.png", new ArrayList<DisplayObject>());
     Sprite planet2 = new Sprite("planet2", "planets/2.png", new ArrayList<DisplayObject>());
-    ArrayList<DisplayObject> planets = new ArrayList<DisplayObject>(Arrays.asList(planet1, planet2));
-    Sprite sun = new Sprite("sun", "planets/12.png", planets);
+    Sprite sun = new Sprite("sun", "planets/12.png", new ArrayList<DisplayObject>());
 
 
 	/**
@@ -29,13 +28,18 @@ public class LabOneGame extends Game{
 	 * */
 	public LabOneGame() {
 	    super("Lab One Test Game",500, 300);
+		planet1.addChild(moon1);
+		sun.addChild(planet1);
+		sun.addChild(planet2);
 	    sun.setPosition(new Point (200, 100));
         sun.getChild("planet1").setPosition(new Point(50, 50));
         planet1.getChild("moon1").setPosition(new Point(25, 25));
-        sun.getChild("planet1").setScaleX(1.0);
-        sun.getChild("planet1").setScaleY(1.0);
-        sun.getChild("planet2").setScaleX(2.0);
-        sun.getChild("planet2").setScaleY(2.0);
+        sun.getChild("planet1").setScaleX(.5);
+        sun.getChild("planet1").setScaleY(.5);
+        sun.getChild("planet2").setScaleX(.5);
+        sun.getChild("planet2").setScaleY(.5);
+		System.out.println(convertToGlobal(planet1.getPosition(), planet1.getParent()));
+		System.out.println(convertToGlobal(moon1.getPosition(), moon1.getParent()));
 	}
 	
 	/**
@@ -45,9 +49,9 @@ public class LabOneGame extends Game{
 	@Override
 	public void update(ArrayList<Integer> pressedKeys){
 		super.update(pressedKeys);
-		sun.getChild("planet1").setRotation(sun.getChild("planet1").getRotation() + 1);
+		//sun.getChild("planet1").setRotation(sun.getChild("planet1").getRotation() + 1);
 		//planet1.getChild("moon1").setRotation(planet1.getChild("moon1").getRotation() + 3);
-        sun.getChild("planet2").setRotation(sun.getChild("planet2").getRotation() + 3);
+        //sun.getChild("planet2").setRotation(sun.getChild("planet2").getRotation() - 1);
 
 
 		/* Make sure mario is not null. Sometimes Swing can auto cause an extra frame to go before everything is initialized */

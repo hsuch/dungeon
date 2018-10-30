@@ -18,6 +18,7 @@ public class DisplayObjectContainer extends DisplayObject{
 
     public void addChild(DisplayObject d){
         displayObjects.add(d);
+        d.setParent(this);
     }
 
     public void addChildAtIndex(DisplayObject d, int i){
@@ -67,5 +68,4 @@ public class DisplayObjectContainer extends DisplayObject{
 
         for (DisplayObject d: displayObjects) d.draw(g);
     }
-
 }

@@ -109,7 +109,7 @@ public class DisplayObject {
 	 */
 	public DisplayObject getParent() { return this.parent; }
 
-	public void setParent(DisplayObject parent) { this.parent=parent; }
+	public void setParent(DisplayObject parent) { this.parent = parent; }
 
 	public Point getPosition() { return this.position; }
 
@@ -221,6 +221,7 @@ public class DisplayObject {
 			 * (rotation, etc.)
 			 */
 			Graphics2D g2d = (Graphics2D) g;
+			reverseTransformations(g2d);
 			applyTransformations(g2d);
 
 			if (this.visible) {
@@ -244,11 +245,11 @@ public class DisplayObject {
 	 * object
 	 * */
 	protected void applyTransformations(Graphics2D g2d) {
-		Point globalPosition = convertToGlobal(this.position);
-		Point globalPivot = convertToGlobal(this.pivotPoint);
+		Point globalPosition = convertToGlobal(this.position, this.getParent());
+		Point globalPivot = convertToGlobal(this.pivotPoint, this.getParent());
+		System.out.println(globalPosition);
 		g2d.translate(globalPosition.x, globalPosition.y);
 		g2d.rotate(Math.toRadians(this.rotation), globalPivot.x, globalPivot.y);
-		g2d.scale(1, 1);
 		g2d.scale(this.scaleX, this.scaleY);
 		float curAlpha;
 		this.oldAlpha = curAlpha = ((AlphaComposite) g2d.getComposite()).getAlpha();
@@ -262,17 +263,17 @@ public class DisplayObject {
 	protected void reverseTransformations(Graphics2D g2d) {
 		g2d.setComposite(AlphaComposite.getInstance(3, this.oldAlpha));
 		g2d.scale(1, 1);
-		g2d.rotate(0);
+		g2d.rotate(0, 0, 0);
 		g2d.translate(0,0);
 	}
 
-	protected Point convertToGlobal(Point local){
-		if (this.getParent() == null) {
+	protected Point convertToGlobal(Point local, DisplayObject parent){
+		if (parent == null) {
 			return local;
 		}
 		else {
-			return new Point(local.x + convertToGlobal(this.parent.getPosition()).x,
-					local.y + convertToGlobal(this.parent.getPosition()).y);
+			return new Point(local.x + convertToGlobal(parent.getPosition(), parent.getParent()).x,
+					local.y + convertToGlobal(parent.getPosition(), parent.getParent()).y);
 		}
 	}
 
@@ -281,8 +282,8 @@ public class DisplayObject {
 			return global;
 		}
 		else {
-			return new Point(global.x - convertToGlobal(this.getParent().getPosition()).x,
-					global.y - convertToGlobal(this.getParent().getPosition()).y);
+			return new Point(global.x - convertToGlobal(parent.getPosition(), parent.getParent()).x,
+					global.y - convertToGlobal(parent.getPosition(), parent.getParent()).x);
 		}
 	}
 
