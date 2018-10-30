@@ -32,14 +32,14 @@ public class LabOneGame extends Game{
 		sun.addChild(planet1);
 		sun.addChild(planet2);
 	    sun.setPosition(new Point (200, 100));
-        sun.getChild("planet1").setPosition(new Point(50, 50));
-        planet1.getChild("moon1").setPosition(new Point(25, 25));
+        //sun.getChild("planet1").setPosition(new Point(50, 50));
+        //planet1.getChild("moon1").setPosition(new Point(25, 25));
         sun.getChild("planet1").setScaleX(.5);
         sun.getChild("planet1").setScaleY(.5);
-        sun.getChild("planet2").setScaleX(.5);
-        sun.getChild("planet2").setScaleY(.5);
-		System.out.println(convertToGlobal(planet1.getPosition(), planet1.getParent()));
-		System.out.println(convertToGlobal(moon1.getPosition(), moon1.getParent()));
+        sun.getChild("planet2").setScaleX(.3);
+        sun.getChild("planet2").setScaleY(.3);
+        planet1.getChild("moon1").setScaleX(.2);
+		planet1.getChild("moon1").setScaleY(.2);
 	}
 	
 	/**
@@ -49,9 +49,9 @@ public class LabOneGame extends Game{
 	@Override
 	public void update(ArrayList<Integer> pressedKeys){
 		super.update(pressedKeys);
-		//sun.getChild("planet1").setRotation(sun.getChild("planet1").getRotation() + 1);
-		//planet1.getChild("moon1").setRotation(planet1.getChild("moon1").getRotation() + 3);
-        //sun.getChild("planet2").setRotation(sun.getChild("planet2").getRotation() - 1);
+		sun.getChild("planet1").setRotation(sun.getChild("planet1").getRotation() + 1);
+		planet1.getChild("moon1").setRotation(planet1.getChild("moon1").getRotation() + 2);
+        sun.getChild("planet2").setRotation(sun.getChild("planet2").getRotation() - 1);
 
 
 		/* Make sure mario is not null. Sometimes Swing can auto cause an extra frame to go before everything is initialized */

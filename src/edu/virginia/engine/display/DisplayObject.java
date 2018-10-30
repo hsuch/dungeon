@@ -221,7 +221,6 @@ public class DisplayObject {
 			 * (rotation, etc.)
 			 */
 			Graphics2D g2d = (Graphics2D) g;
-			reverseTransformations(g2d);
 			applyTransformations(g2d);
 
 			if (this.visible) {
@@ -247,7 +246,8 @@ public class DisplayObject {
 	protected void applyTransformations(Graphics2D g2d) {
 		Point globalPosition = convertToGlobal(this.position, this.getParent());
 		Point globalPivot = convertToGlobal(this.pivotPoint, this.getParent());
-		System.out.println(globalPosition);
+		this.setPivotPoint(new Point());
+		System.out.println(this.id + globalPivot);
 		g2d.translate(globalPosition.x, globalPosition.y);
 		g2d.rotate(Math.toRadians(this.rotation), globalPivot.x, globalPivot.y);
 		g2d.scale(this.scaleX, this.scaleY);
@@ -261,10 +261,12 @@ public class DisplayObject {
 	 * object
 	 * */
 	protected void reverseTransformations(Graphics2D g2d) {
+		Point globalPosition = convertToGlobal(this.position, this.getParent());
+		Point globalPivot = convertToGlobal(this.pivotPoint, this.getParent());
 		g2d.setComposite(AlphaComposite.getInstance(3, this.oldAlpha));
-		g2d.scale(1, 1);
-		g2d.rotate(0, 0, 0);
-		g2d.translate(0,0);
+		g2d.scale(1/this.scaleX, 1/this.scaleY);
+		g2d.rotate(Math.toRadians(-this.rotation), -globalPivot.x, -globalPivot.y);
+		g2d.translate(-globalPosition.x, -globalPosition.y);
 	}
 
 	protected Point convertToGlobal(Point local, DisplayObject parent){
@@ -277,13 +279,13 @@ public class DisplayObject {
 		}
 	}
 
-	protected Point convertToLocal(Point global){
-		if (this.getParent() == null) {
+	protected Point convertToLocal(Point global, DisplayObject parent){
+		if (parent == null) {
 			return global;
 		}
 		else {
-			return new Point(global.x - convertToGlobal(parent.getPosition(), parent.getParent()).x,
-					global.y - convertToGlobal(parent.getPosition(), parent.getParent()).x);
+			return new Point(global.x - convertToLocal(parent.getPosition(), parent.getParent()).x,
+					global.y - convertToLocal(parent.getPosition(), parent.getParent()).x);
 		}
 	}
 
