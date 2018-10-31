@@ -22,6 +22,8 @@ public class LabOneGame extends Game{
     Sprite planet2 = new Sprite("planet2", "planets/2.png", new ArrayList<DisplayObject>());
     Sprite sun = new Sprite("sun", "planets/12.png", new ArrayList<DisplayObject>());
 
+    int rotate = 1;
+    int moon_rotate = 2;
 
 	/**
 	 * Constructor. See constructor in Game.java for details on the parameters given
@@ -49,200 +51,84 @@ public class LabOneGame extends Game{
 	@Override
 	public void update(ArrayList<Integer> pressedKeys){
 		super.update(pressedKeys);
-		sun.getChild("planet1").setRotation(sun.getChild("planet1").getRotation() + 1);
-		planet1.getChild("moon1").setRotation(planet1.getChild("moon1").getRotation() + 2);
-        sun.getChild("planet2").setRotation(sun.getChild("planet2").getRotation() - 1);
+		sun.getChild("planet1").setRotation(sun.getChild("planet1").getRotation() + rotate);
+		planet1.getChild("moon1").setRotation(planet1.getChild("moon1").getRotation() + moon_rotate);
+        sun.getChild("planet2").setRotation(sun.getChild("planet2").getRotation() - rotate);
 
-
-		/* Make sure mario is not null. Sometimes Swing can auto cause an extra frame to go before everything is initialized */
-
-        /*
-		if(mario != null) mario.update(pressedKeys);
-
-		if (pressedKeys.contains(KeyEvent.VK_UP)){
-			mario.setPosition(new Point(mario.getPosition().x,
-					mario.getPosition().y - 5));
-			if(mario.getTransform() == "bird") {
-                mario.animate("bird");
-            }
-            else {
-                mario.animate("mariospin");
-            }
-		}
-		if (pressedKeys.contains(KeyEvent.VK_DOWN)){
-			mario.setPosition(new Point(mario.getPosition().x,
-					mario.getPosition().y + 5));
-            if(mario.getTransform() == "bird") {
-                mario.animate("bird");
-            }
-            else {
-                mario.animate("mariospin");
-            }
-		}
-		if (pressedKeys.contains(KeyEvent.VK_LEFT)){
-			mario.setPosition(new Point(mario.getPosition().x - 5,
-					mario.getPosition().y));
-            if(mario.getTransform() == "bird") {
-                mario.animate("bird");
-            }
-            else {
-                mario.animate("mariospin");
-            }
-		}
-		if (pressedKeys.contains(KeyEvent.VK_RIGHT)){
-			mario.setPosition(new Point(mario.getPosition().x + 5,
-					mario.getPosition().y));
-            if(mario.getTransform() == "bird") {
-                mario.animate("bird");
-            }
-            else {
-                mario.animate("mariospin");
-            }
-		}
-        if(pressedKeys.contains(KeyEvent.VK_U)) {
-            if(mario.getIsAnimated()) {
-                mario.stopAnimation();
-                mario.setIsAnimated(false);
-                try {
-                    Thread.sleep(200);
-                }
-                catch (InterruptedException e){
-                    assert false;
-                }
-            }
-            else {
-                mario.animate(mario.getTransform());
-                mario.setIsAnimated(true);
-                try {
-                    Thread.sleep(200);
-                }
-                catch (InterruptedException e){
-                    assert false;
-                }
-            }
-        }
-        if(pressedKeys.contains(KeyEvent.VK_T)) {
-            if(mario.getTransform() == "bird") {
-                mario.setTransform("mariospin");
-                mario.animate("mariospin");
-                try {
-                    Thread.sleep(200);
-                }
-                catch (InterruptedException e){
-                    assert false;
-                }
-            }
-            else {
-                mario.setTransform("bird");
-                mario.animate("bird");
-                try {
-                    Thread.sleep(200);
-
-                }
-                catch (InterruptedException e){
-                    assert false;
-                }
-            }
-        }
-        if(pressedKeys.contains(KeyEvent.VK_M)) {
-            if(mario.getAnimationSpeed() >= 0) {
-                mario.setAnimationSpeed(mario.getAnimationSpeed()-5);
-            }
-        }
-        if(pressedKeys.contains(KeyEvent.VK_N)) {
-            if (mario.getAnimationSpeed() <= 100) {
-                mario.setAnimationSpeed(mario.getAnimationSpeed() + 5);
-            }
-        }
-		if(pressedKeys.contains(KeyEvent.VK_I)) {
-			mario.setPivotPoint(new Point(mario.getPivotPoint().x - 5,
-					mario.getPivotPoint().y));
-            if(mario.getTransform() == "bird") {
-                mario.animate("bird");
-            }
-            else {
-                mario.animate("mariospin");
-            }
-		}
-		if(pressedKeys.contains(KeyEvent.VK_K)){
-			mario.setPivotPoint(new Point(mario.getPivotPoint().x + 5,
-					mario.getPivotPoint().y));
-            if(mario.getTransform() == "bird") {
-                mario.animate("bird");
-            }
-            else {
-                mario.animate("mariospin");
-            }
-		}
-		if(pressedKeys.contains(KeyEvent.VK_J)){
-			mario.setPivotPoint(new Point(mario.getPivotPoint().x,
-					mario.getPivotPoint().y - 5));
-            if(mario.getTransform() == "bird") {
-                mario.animate("bird");
-            }
-            else {
-                mario.animate("mariospin");
-            }
-		}
-		if(pressedKeys.contains(KeyEvent.VK_L)){
-			mario.setPivotPoint(new Point(mario.getPivotPoint().x,
-					mario.getPivotPoint().y + 5));
-            if(mario.getTransform() == "bird") {
-                mario.animate("bird");
-            }
-            else {
-                mario.animate("mariospin");
-            }
-		}
-
-		if(pressedKeys.contains(KeyEvent.VK_W)) {
-			mario.setRotation(mario.getRotation() + 10);
-		}
 		if(pressedKeys.contains(KeyEvent.VK_Q)) {
-			mario.setRotation(mario.getRotation() - 10);
+			sun.setScaleX(sun.getScaleX() + 0.1);
+			sun.setScaleY(sun.getScaleY() + 0.1);
+			ArrayList<DisplayObject> planets = sun.getChildren();
+			for(DisplayObject planet : planets) {
+				planet.setScaleY(planet.getScaleY() + 0.1);
+				planet.setScaleX(planet.getScaleX() + 0.1);
+			}
 		}
-        if (pressedKeys.contains(KeyEvent.VK_V)) {
-            if (mario.getVisible()) {
-                mario.setVisible(false);
-				try {
-					Thread.sleep(200);
-				}
-				catch (InterruptedException e){
-					assert false;
-				}
-            }
-            else {
-                mario.setVisible(true);
-                try {
-                    Thread.sleep(200);
-                }
-                catch (InterruptedException e){
-                    assert false;
-                }
-            }
-        }
-        if(pressedKeys.contains(KeyEvent.VK_Z)) {
-            if (mario.getAlpha() < 1.0f) {
-                mario.setAlpha(mario.getAlpha() + 0.1f);
-            }
-        }
-        if(pressedKeys.contains(KeyEvent.VK_X)) {
-            if ((mario.getAlpha() - 0.1f) > 0.0f) {
-                mario.setAlpha(mario.getAlpha() - 0.1f);
-            }
-        }
-        if(pressedKeys.contains(KeyEvent.VK_A)) {
-            mario.setScaleX(mario.getScaleX() + 0.1);
-            mario.setScaleY(mario.getScaleY() + 0.1);
-        }
-        if(pressedKeys.contains(KeyEvent.VK_S)) {
-            double xVar = mario.getScaleX();
-            double yVar = mario.getScaleY();
-            if(xVar - 0.1 >= 0 && yVar - 0.1 >= 0) {
-                mario.setScaleX(mario.getScaleX() - 0.1);
-                mario.setScaleY(mario.getScaleY() - 0.1);
-            }
-        }*/
+		if(pressedKeys.contains(KeyEvent.VK_W)) {
+			sun.setScaleX(sun.getScaleX() - 0.1);
+			sun.setScaleY(sun.getScaleY() - 0.1);
+			ArrayList<DisplayObject> planets = sun.getChildren();
+			for(DisplayObject planet : planets) {
+				planet.setScaleY(planet.getScaleY() - 0.1);
+				planet.setScaleX(planet.getScaleX() - 0.1);
+			}
+		}
+		if(pressedKeys.contains(KeyEvent.VK_UP)) {
+			sun.setPosition(new Point(sun.getPosition().x,
+					sun.getPosition().y + 5));
+			ArrayList<DisplayObject> planets = sun.getChildren();
+			for(DisplayObject planet : planets) {
+				planet.setPosition(new Point(planet.getPosition().x,
+						planet.getPosition().y + 5));
+			}
+		}
+		if(pressedKeys.contains(KeyEvent.VK_DOWN)) {
+			sun.setPosition(new Point(sun.getPosition().x,
+					sun.getPosition().y - 5));
+			ArrayList<DisplayObject> planets = sun.getChildren();
+			for(DisplayObject planet : planets) {
+				planet.setPosition(new Point(planet.getPosition().x,
+						planet.getPosition().y - 5));
+			}
+		}
+		if(pressedKeys.contains(KeyEvent.VK_LEFT)) {
+			sun.setPosition(new Point(sun.getPosition().x - 5,
+					sun.getPosition().y));
+			ArrayList<DisplayObject> planets = sun.getChildren();
+			for(DisplayObject planet : planets) {
+				planet.setPosition(new Point(planet.getPosition().x - 5,
+						planet.getPosition().y));
+			}
+		}
+		if(pressedKeys.contains(KeyEvent.VK_RIGHT)) {
+			sun.setPosition(new Point(sun.getPosition().x + 5,
+					sun.getPosition().y));
+			ArrayList<DisplayObject> planets = sun.getChildren();
+			for(DisplayObject planet : planets) {
+				planet.setPosition(new Point(planet.getPosition().x + 5,
+						planet.getPosition().y));
+			}
+		}
+		if(pressedKeys.contains(KeyEvent.VK_A)) {
+			rotate = rotate * -1;
+			moon_rotate = moon_rotate * -1;
+			try {
+				Thread.sleep(200);
+			}
+			catch (InterruptedException e){
+				assert false;
+			}
+		}
+		if(pressedKeys.contains(KeyEvent.VK_S)) {
+			rotate = rotate * -1;
+			moon_rotate = moon_rotate * -1;
+			try {
+				Thread.sleep(200);
+			}
+			catch (InterruptedException e){
+				assert false;
+			}
+		}
 
 	}
 	
