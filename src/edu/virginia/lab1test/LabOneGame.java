@@ -1,7 +1,9 @@
 package edu.virginia.lab1test;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -13,6 +15,13 @@ import edu.virginia.engine.display.*;
  * */
 public class LabOneGame extends Game{
 
+	/* Create a sprite object for our game. We'll use mario */
+	AnimatedSprite mario = new AnimatedSprite("Mario", new Point(0,0), new ArrayList<DisplayObject>());
+    String soundfile = ("resources" + File.separator + "sound" + File.separator + "piano.wav");
+    String soundfile_2 = ("resources" + File.separator + "sound" + File.separator + "jump.wav");
+    SoundManager sound = new SoundManager();
+
+	/* Lab 3 code - initialize a sun and solar system */
 	/* Create a sprite object for our game. We'll use player */
 	AnimatedSprite player = new AnimatedSprite("Bird", new Point(0,0), new ArrayList<DisplayObject>());
 	Sprite goal = new Sprite("Goal", "planets/3.png", new ArrayList<DisplayObject>());
@@ -35,6 +44,9 @@ public class LabOneGame extends Game{
 	 * */
 	public LabOneGame() {
 	    super("Lab One Test Game",500, 300);
+	    sound.LoadSoundEffect("piano", soundfile);
+        sound.LoadSoundEffect("jump", soundfile_2);
+	    System.out.println((String)sound.getsoundeffects().get("piano"));
         goal.setHitbox(0, 0, 120, 120);
         goal.toggleDrawHitbox();
         goal.setPosition(new Point( 200, 200));
