@@ -3,6 +3,7 @@ package edu.virginia.lab1test;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,7 +17,11 @@ public class LabOneGame extends Game{
 
 	/* Create a sprite object for our game. We'll use mario */
 	AnimatedSprite mario = new AnimatedSprite("Mario", new Point(0,0), new ArrayList<DisplayObject>());
-    /* Lab 3 code - initialize a sun and solar system */
+    String soundfile = ("resources" + File.separator + "sound" + File.separator + "piano.wav");
+    String soundfile_2 = ("resources" + File.separator + "sound" + File.separator + "jump.wav");
+    SoundManager sound = new SoundManager();
+
+	/* Lab 3 code - initialize a sun and solar system */
     /*Sprite moon1 = new Sprite("moon1","planets/3.png", new ArrayList<DisplayObject>());
     Sprite planet1 = new Sprite("planet1", "planets/1.png", new ArrayList<DisplayObject>());
     Sprite planet2 = new Sprite("planet2", "planets/2.png", new ArrayList<DisplayObject>());
@@ -31,6 +36,9 @@ public class LabOneGame extends Game{
 	 * */
 	public LabOneGame() {
 	    super("Lab One Test Game",500, 300);
+	    sound.LoadSoundEffect("piano", soundfile);
+        sound.LoadSoundEffect("jump", soundfile_2);
+	    System.out.println((String)sound.getsoundeffects().get("piano"));
 		/*planet1.addChild(moon1);
 		sun.addChild(planet1);
 		sun.addChild(planet2);
@@ -58,6 +66,7 @@ public class LabOneGame extends Game{
 		if (pressedKeys.contains(KeyEvent.VK_UP)){
 			mario.setPosition(new Point(mario.getPosition().x,
 					mario.getPosition().y - 5));
+			sound.PlaySoundEffect("jump");
 			if(mario.getTransform() == "bird") {
 				mario.animate("bird");
 			}
