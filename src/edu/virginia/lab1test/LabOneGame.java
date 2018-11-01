@@ -5,7 +5,6 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import edu.virginia.engine.display.*;
 
@@ -86,6 +85,7 @@ public class LabOneGame extends Game{
 		if (pressedKeys.contains(KeyEvent.VK_UP)){
 			player.setPosition(new Point(player.getPosition().x,
 					player.getPosition().y - 5));
+			sound.PlaySoundEffect("jump");
 			if(player.getTransform() == "bird") {
 				player.animate("bird");
 			}
