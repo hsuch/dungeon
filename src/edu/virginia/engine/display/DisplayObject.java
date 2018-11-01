@@ -1,13 +1,11 @@
 package edu.virginia.engine.display;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.awt.Point;
-import java.awt.AlphaComposite;
 import javax.imageio.ImageIO;
 import java.util.concurrent.TimeUnit;
 
@@ -48,6 +46,10 @@ public class DisplayObject {
     private Boolean isAnimated;
 
     private String transform;
+
+    /* Defines hitbox */
+	private Rectangle hitbox;
+	private Boolean drawHitbox = false;
 
 	/**
 	 * Constructors: can pass in the id OR the id and image's file path and
@@ -197,6 +199,29 @@ public class DisplayObject {
 		displayImage = image;
 	}
 
+	/**
+	 * Lab 4 Hitbox Code
+	 */
+	public void setHitbox(int x, int y, int w, int h) {
+		this.hitbox = new Rectangle(x, y, w, h);
+	}
+	public Rectangle convertHitboxToGlobal(Rectangle hitbox) {
+		Point globalOrigin = convertToGlobal(new Point(hitbox.x, hitbox.y), this);
+		return new Rectangle(globalOrigin.x, globalOrigin.y, hitbox.width, hitbox.height);
+	}
+	public Rectangle getHitbox() {
+		return convertHitboxToGlobal(this.hitbox);
+	}
+	public void toggleDrawHitbox() {
+		this.drawHitbox = !this.drawHitbox;
+	}
+	public boolean collidesWith(DisplayObject other) {
+		if(convertHitboxToGlobal(this.hitbox).intersects(other.getHitbox())) {
+			return true;
+		}
+		return false;
+	}
+
 
 	/**
 	 * Invoked on every frame before drawing. Used to update this display
@@ -228,6 +253,10 @@ public class DisplayObject {
                 g2d.drawImage(displayImage, 0, 0,
                         (int) (getUnscaledWidth()),
                         (int) (getUnscaledHeight()), null);
+
+                if(this.drawHitbox) {
+                	g2d.draw(this.hitbox);
+				}
 
                 /*
                  * undo the transformations so this doesn't affect other display
