@@ -22,6 +22,10 @@ public class LabOneGame extends Game{
     SoundManager sound = new SoundManager();
 
 	/* Lab 3 code - initialize a sun and solar system */
+	/* Create a sprite object for our game. We'll use player */
+	AnimatedSprite player = new AnimatedSprite("Bird", new Point(0,0), new ArrayList<DisplayObject>());
+	AnimatedSprite object = new AnimatedSprite("Object", new Point(0,0), new ArrayList<DisplayObject>());
+    /* Lab 3 code - initialize a sun and solar system */
     /*Sprite moon1 = new Sprite("moon1","planets/3.png", new ArrayList<DisplayObject>());
     Sprite planet1 = new Sprite("planet1", "planets/1.png", new ArrayList<DisplayObject>());
     Sprite planet2 = new Sprite("planet2", "planets/2.png", new ArrayList<DisplayObject>());
@@ -39,6 +43,12 @@ public class LabOneGame extends Game{
 	    sound.LoadSoundEffect("piano", soundfile);
         sound.LoadSoundEffect("jump", soundfile_2);
 	    System.out.println((String)sound.getsoundeffects().get("piano"));
+        object.animate("mariospin");
+        object.setHitbox(0, 0, 50, 50);
+        object.toggleDrawHitbox();
+        object.setPosition(new Point( 200, 200));
+	    player.setHitbox(0, 0, 20, 20);
+	    player.toggleDrawHitbox();
 		/*planet1.addChild(moon1);
 		sun.addChild(planet1);
 		sun.addChild(planet2);
@@ -60,8 +70,12 @@ public class LabOneGame extends Game{
 	 * */
 	@Override
 	public void update(ArrayList<Integer> pressedKeys){
-		/* Make sure mario is not null. Sometimes Swing can auto cause an extra frame to go before everything is initialized */
-		if(mario != null) mario.update(pressedKeys);
+		/* Make sure player is not null. Sometimes Swing can auto cause an extra frame to go before everything is initialized */
+		if(player != null) player.update(pressedKeys);
+
+		if(player.collidesWith(object)) {
+		    System.out.println("Collided!");
+        }
 
 		if (pressedKeys.contains(KeyEvent.VK_UP)){
 			mario.setPosition(new Point(mario.getPosition().x,
@@ -71,43 +85,43 @@ public class LabOneGame extends Game{
 				mario.animate("bird");
 			}
 			else {
-				mario.animate("mariospin");
+				player.animate("playerspin");
 			}
 		}
 		if (pressedKeys.contains(KeyEvent.VK_DOWN)){
-			mario.setPosition(new Point(mario.getPosition().x,
-					mario.getPosition().y + 5));
-			if(mario.getTransform() == "bird") {
-				mario.animate("bird");
+			player.setPosition(new Point(player.getPosition().x,
+					player.getPosition().y + 5));
+			if(player.getTransform() == "bird") {
+				player.animate("bird");
 			}
 			else {
-				mario.animate("mariospin");
+				player.animate("playerspin");
 			}
 		}
 		if (pressedKeys.contains(KeyEvent.VK_LEFT)){
-			mario.setPosition(new Point(mario.getPosition().x - 5,
-					mario.getPosition().y));
-			if(mario.getTransform() == "bird") {
-				mario.animate("bird");
+			player.setPosition(new Point(player.getPosition().x - 5,
+					player.getPosition().y));
+			if(player.getTransform() == "bird") {
+				player.animate("bird");
 			}
 			else {
-				mario.animate("mariospin");
+				player.animate("playerspin");
 			}
 		}
 		if (pressedKeys.contains(KeyEvent.VK_RIGHT)){
-			mario.setPosition(new Point(mario.getPosition().x + 5,
-					mario.getPosition().y));
-			if(mario.getTransform() == "bird") {
-				mario.animate("bird");
+			player.setPosition(new Point(player.getPosition().x + 5,
+					player.getPosition().y));
+			if(player.getTransform() == "bird") {
+				player.animate("bird");
 			}
 			else {
-				mario.animate("mariospin");
+				player.animate("playerspin");
 			}
 		}
 		if(pressedKeys.contains(KeyEvent.VK_U)) {
-			if(mario.getIsAnimated()) {
-				mario.stopAnimation();
-				mario.setIsAnimated(false);
+			if(player.getIsAnimated()) {
+				player.stopAnimation();
+				player.setIsAnimated(false);
 				try {
 					Thread.sleep(200);
 				}
@@ -116,8 +130,8 @@ public class LabOneGame extends Game{
 				}
 			}
 			else {
-				mario.animate(mario.getTransform());
-				mario.setIsAnimated(true);
+				player.animate(player.getTransform());
+				player.setIsAnimated(true);
 				try {
 					Thread.sleep(200);
 				}
@@ -127,9 +141,9 @@ public class LabOneGame extends Game{
 			}
 		}
 		if(pressedKeys.contains(KeyEvent.VK_T)) {
-			if(mario.getTransform() == "bird") {
-				mario.setTransform("mariospin");
-				mario.animate("mariospin");
+			if(player.getTransform() == "bird") {
+				player.setTransform("playerspin");
+				player.animate("playerspin");
 				try {
 					Thread.sleep(200);
 				}
@@ -138,8 +152,8 @@ public class LabOneGame extends Game{
 				}
 			}
 			else {
-				mario.setTransform("bird");
-				mario.animate("bird");
+				player.setTransform("bird");
+				player.animate("bird");
 				try {
 					Thread.sleep(200);
 
@@ -150,65 +164,65 @@ public class LabOneGame extends Game{
 			}
 		}
 		if(pressedKeys.contains(KeyEvent.VK_M)) {
-			if(mario.getAnimationSpeed() >= 0) {
-				mario.setAnimationSpeed(mario.getAnimationSpeed()-5);
+			if(player.getAnimationSpeed() >= 0) {
+				player.setAnimationSpeed(player.getAnimationSpeed()-5);
 			}
 		}
 		if(pressedKeys.contains(KeyEvent.VK_N)) {
-			if (mario.getAnimationSpeed() <= 100) {
-				mario.setAnimationSpeed(mario.getAnimationSpeed() + 5);
+			if (player.getAnimationSpeed() <= 100) {
+				player.setAnimationSpeed(player.getAnimationSpeed() + 5);
 			}
 		}
 		if(pressedKeys.contains(KeyEvent.VK_I)) {
-			mario.setPivotPoint(new Point(mario.getPivotPoint().x - 5,
-					mario.getPivotPoint().y));
-			if(mario.getTransform() == "bird") {
-				mario.animate("bird");
+			player.setPivotPoint(new Point(player.getPivotPoint().x - 5,
+					player.getPivotPoint().y));
+			if(player.getTransform() == "bird") {
+				player.animate("bird");
 			}
 			else {
-				mario.animate("mariospin");
+				player.animate("playerspin");
 			}
 		}
 		if(pressedKeys.contains(KeyEvent.VK_K)){
-			mario.setPivotPoint(new Point(mario.getPivotPoint().x + 5,
-					mario.getPivotPoint().y));
-			if(mario.getTransform() == "bird") {
-				mario.animate("bird");
+			player.setPivotPoint(new Point(player.getPivotPoint().x + 5,
+					player.getPivotPoint().y));
+			if(player.getTransform() == "bird") {
+				player.animate("bird");
 			}
 			else {
-				mario.animate("mariospin");
+				player.animate("playerspin");
 			}
 		}
 		if(pressedKeys.contains(KeyEvent.VK_J)){
-			mario.setPivotPoint(new Point(mario.getPivotPoint().x,
-					mario.getPivotPoint().y - 5));
-			if(mario.getTransform() == "bird") {
-				mario.animate("bird");
+			player.setPivotPoint(new Point(player.getPivotPoint().x,
+					player.getPivotPoint().y - 5));
+			if(player.getTransform() == "bird") {
+				player.animate("bird");
 			}
 			else {
-				mario.animate("mariospin");
+				player.animate("playerspin");
 			}
 		}
 		if(pressedKeys.contains(KeyEvent.VK_L)){
-			mario.setPivotPoint(new Point(mario.getPivotPoint().x,
-					mario.getPivotPoint().y + 5));
-			if(mario.getTransform() == "bird") {
-				mario.animate("bird");
+			player.setPivotPoint(new Point(player.getPivotPoint().x,
+					player.getPivotPoint().y + 5));
+			if(player.getTransform() == "bird") {
+				player.animate("bird");
 			}
 			else {
-				mario.animate("mariospin");
+				player.animate("playerspin");
 			}
 		}
 
 		if(pressedKeys.contains(KeyEvent.VK_W)) {
-			mario.setRotation(mario.getRotation() + 10);
+			player.setRotation(player.getRotation() + 10);
 		}
 		if(pressedKeys.contains(KeyEvent.VK_Q)) {
-			mario.setRotation(mario.getRotation() - 10);
+			player.setRotation(player.getRotation() - 10);
 		}
 		if (pressedKeys.contains(KeyEvent.VK_V)) {
-			if (mario.getVisible()) {
-				mario.setVisible(false);
+			if (player.getVisible()) {
+				player.setVisible(false);
 				try {
 					Thread.sleep(200);
 				}
@@ -217,7 +231,7 @@ public class LabOneGame extends Game{
 				}
 			}
 			else {
-				mario.setVisible(true);
+				player.setVisible(true);
 				try {
 					Thread.sleep(200);
 				}
@@ -227,40 +241,42 @@ public class LabOneGame extends Game{
 			}
 		}
 		if(pressedKeys.contains(KeyEvent.VK_Z)) {
-			if (mario.getAlpha() < 1.0f) {
-				mario.setAlpha(mario.getAlpha() + 0.1f);
+			if (player.getAlpha() < 1.0f) {
+				player.setAlpha(player.getAlpha() + 0.1f);
 			}
 		}
 		if(pressedKeys.contains(KeyEvent.VK_X)) {
-			if ((mario.getAlpha() - 0.1f) > 0.0f) {
-				mario.setAlpha(mario.getAlpha() - 0.1f);
+			if ((player.getAlpha() - 0.1f) > 0.0f) {
+				player.setAlpha(player.getAlpha() - 0.1f);
 			}
 		}
 		if(pressedKeys.contains(KeyEvent.VK_A)) {
-			mario.setScaleX(mario.getScaleX() + 0.1);
-			mario.setScaleY(mario.getScaleY() + 0.1);
+			player.setScaleX(player.getScaleX() + 0.1);
+			player.setScaleY(player.getScaleY() + 0.1);
 		}
 		if(pressedKeys.contains(KeyEvent.VK_S)) {
-			double xVar = mario.getScaleX();
-			double yVar = mario.getScaleY();
+			double xVar = player.getScaleX();
+			double yVar = player.getScaleY();
 			if(xVar - 0.1 >= 0 && yVar - 0.1 >= 0) {
-				mario.setScaleX(mario.getScaleX() - 0.1);
-				mario.setScaleY(mario.getScaleY() - 0.1);
+				player.setScaleX(player.getScaleX() - 0.1);
+				player.setScaleY(player.getScaleY() - 0.1);
 			}
 		}
 
 	}
 	
 	/**
-	 * Engine automatically invokes draw() every frame as well. If we want to make sure mario gets drawn to
-	 * the screen, we need to make sure to override this method and call mario's draw method.
+	 * Engine automatically invokes draw() every frame as well. If we want to make sure player gets drawn to
+	 * the screen, we need to make sure to override this method and call player's draw method.
 	 * */
 	@Override
 	public void draw(Graphics g){
 		super.draw(g);
 		
-		/* Same, just check for null in case a frame gets thrown in before Mario is initialized */
-		if(mario != null) mario.draw(g);
+		/* Same, just check for null in case a frame gets thrown in before player is initialized */
+		if(player != null) player.drawAnimation(g);
+
+		object.drawAnimation(g);
 	}
 
 	/**
