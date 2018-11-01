@@ -1,7 +1,6 @@
 package edu.virginia.lab1test;
 
-import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +15,11 @@ public class LabOneGame extends Game{
 
 	/* Create a sprite object for our game. We'll use player */
 	AnimatedSprite player = new AnimatedSprite("Bird", new Point(0,0), new ArrayList<DisplayObject>());
-	AnimatedSprite object = new AnimatedSprite("Object", new Point(0,0), new ArrayList<DisplayObject>());
+	Sprite goal = new Sprite("Goal", "planets/3.png", new ArrayList<DisplayObject>());
+	Sprite obstacle1 = new Sprite("Obstacle1", "planets/9.png", new ArrayList<DisplayObject>());
+	int health = 10;
+	boolean win = false;
+
     /* Lab 3 code - initialize a sun and solar system */
     /*Sprite moon1 = new Sprite("moon1","planets/3.png", new ArrayList<DisplayObject>());
     Sprite planet1 = new Sprite("planet1", "planets/1.png", new ArrayList<DisplayObject>());
@@ -32,10 +35,12 @@ public class LabOneGame extends Game{
 	 * */
 	public LabOneGame() {
 	    super("Lab One Test Game",500, 300);
-        object.animate("mariospin");
-        object.setHitbox(0, 0, 50, 50);
-        object.toggleDrawHitbox();
-        object.setPosition(new Point( 200, 200));
+        goal.setHitbox(0, 0, 120, 120);
+        goal.toggleDrawHitbox();
+        goal.setPosition(new Point( 200, 200));
+        obstacle1.setScaleX(0.5);
+        obstacle1.setScaleY(0.5);
+        obstacle1.setPosition(new Point(100, 100));
 	    player.setHitbox(0, 0, 20, 20);
 	    player.toggleDrawHitbox();
 		/*planet1.addChild(moon1);
@@ -62,8 +67,8 @@ public class LabOneGame extends Game{
 		/* Make sure player is not null. Sometimes Swing can auto cause an extra frame to go before everything is initialized */
 		if(player != null) player.update(pressedKeys);
 
-		if(player.collidesWith(object)) {
-		    System.out.println("Collided!");
+		if(player.collidesWith(goal)) {
+		    this.win = true;
         }
 
 		if (pressedKeys.contains(KeyEvent.VK_UP)){
@@ -264,7 +269,11 @@ public class LabOneGame extends Game{
 		/* Same, just check for null in case a frame gets thrown in before player is initialized */
 		if(player != null) player.drawAnimation(g);
 
-		object.drawAnimation(g);
+		obstacle1.draw(g);
+
+		if(!win){
+            goal.draw(g);
+        }
 	}
 
 	/**
