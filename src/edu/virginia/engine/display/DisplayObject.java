@@ -244,12 +244,8 @@ public class DisplayObject {
 	 * object
 	 * */
 	protected void applyTransformations(Graphics2D g2d) {
-		Point globalPosition = convertToGlobal(this.position, this.getParent());
-		Point globalPivot = convertToGlobal(this.pivotPoint, this.getParent());
-		this.setPivotPoint(new Point());
-		System.out.println(this.id + globalPivot);
-		g2d.translate(globalPosition.x, globalPosition.y);
-		g2d.rotate(Math.toRadians(this.rotation), globalPivot.x, globalPivot.y);
+		g2d.translate(this.position.x, this.position.y);
+		g2d.rotate(Math.toRadians(this.rotation), this.pivotPoint.x, this.pivotPoint.y);
 		g2d.scale(this.scaleX, this.scaleY);
 		float curAlpha;
 		this.oldAlpha = curAlpha = ((AlphaComposite) g2d.getComposite()).getAlpha();
@@ -261,12 +257,10 @@ public class DisplayObject {
 	 * object
 	 * */
 	protected void reverseTransformations(Graphics2D g2d) {
-		Point globalPosition = convertToGlobal(this.position, this.getParent());
-		Point globalPivot = convertToGlobal(this.pivotPoint, this.getParent());
 		g2d.setComposite(AlphaComposite.getInstance(3, this.oldAlpha));
 		g2d.scale(1/this.scaleX, 1/this.scaleY);
-		g2d.rotate(Math.toRadians(-this.rotation), -globalPivot.x, -globalPivot.y);
-		g2d.translate(-globalPosition.x, -globalPosition.y);
+		g2d.rotate(Math.toRadians(-this.rotation), this.pivotPoint.x, this.pivotPoint.y);
+		g2d.translate(-this.position.x, -this.position.y);
 	}
 
 	protected Point convertToGlobal(Point local, DisplayObject parent){

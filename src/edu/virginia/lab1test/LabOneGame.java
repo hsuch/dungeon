@@ -21,6 +21,7 @@ public class LabOneGame extends Game{
     Sprite planet1 = new Sprite("planet1", "planets/1.png", new ArrayList<DisplayObject>());
     Sprite planet2 = new Sprite("planet2", "planets/2.png", new ArrayList<DisplayObject>());
     Sprite sun = new Sprite("sun", "planets/12.png", new ArrayList<DisplayObject>());
+    Point planet1Center = new Point(60, 60);
 
     int rotate = 1;
     int moon_rotate = 2;
@@ -33,8 +34,9 @@ public class LabOneGame extends Game{
 		planet1.addChild(moon1);
 		sun.addChild(planet1);
 		sun.addChild(planet2);
-	    sun.setPosition(new Point (200, 100));
-        //sun.getChild("planet1").setPosition(new Point(50, 50));
+	    sun.setPosition(new Point(200, 100));
+        planet1.setPosition(new Point(100, 100));
+        sun.setPivotPoint(new Point(60, 60));
         //planet1.getChild("moon1").setPosition(new Point(25, 25));
         sun.getChild("planet1").setScaleX(.5);
         sun.getChild("planet1").setScaleY(.5);
@@ -51,83 +53,42 @@ public class LabOneGame extends Game{
 	@Override
 	public void update(ArrayList<Integer> pressedKeys){
 		super.update(pressedKeys);
-		sun.getChild("planet1").setRotation(sun.getChild("planet1").getRotation() + rotate);
-		planet1.getChild("moon1").setRotation(planet1.getChild("moon1").getRotation() + moon_rotate);
-        sun.getChild("planet2").setRotation(sun.getChild("planet2").getRotation() - rotate);
+		planet1.setRotation(planet1.getRotation() + rotate);
+		planet1.setPivotPoint(new Point(-40, -40));
+		moon1.setRotation(moon1.getRotation() + moon_rotate);
+		moon1.setPivotPoint(planet1Center);
+        planet2.setRotation(planet2.getRotation() - rotate);
+		planet2.setPivotPoint(new Point(60, 60));
 
 		if(pressedKeys.contains(KeyEvent.VK_Q)) {
 			sun.setScaleX(sun.getScaleX() + 0.1);
 			sun.setScaleY(sun.getScaleY() + 0.1);
-			ArrayList<DisplayObject> planets = sun.getChildren();
-			for(DisplayObject planet : planets) {
-				planet.setScaleY(planet.getScaleY() + 0.1);
-				planet.setScaleX(planet.getScaleX() + 0.1);
-			}
 		}
 		if(pressedKeys.contains(KeyEvent.VK_W)) {
 			sun.setScaleX(sun.getScaleX() - 0.1);
 			sun.setScaleY(sun.getScaleY() - 0.1);
-			ArrayList<DisplayObject> planets = sun.getChildren();
-			for(DisplayObject planet : planets) {
-				planet.setScaleY(planet.getScaleY() - 0.1);
-				planet.setScaleX(planet.getScaleX() - 0.1);
-			}
 		}
 		if(pressedKeys.contains(KeyEvent.VK_UP)) {
 			sun.setPosition(new Point(sun.getPosition().x,
 					sun.getPosition().y + 5));
-			ArrayList<DisplayObject> planets = sun.getChildren();
-			for(DisplayObject planet : planets) {
-				planet.setPosition(new Point(planet.getPosition().x,
-						planet.getPosition().y + 5));
-			}
 		}
 		if(pressedKeys.contains(KeyEvent.VK_DOWN)) {
 			sun.setPosition(new Point(sun.getPosition().x,
 					sun.getPosition().y - 5));
-			ArrayList<DisplayObject> planets = sun.getChildren();
-			for(DisplayObject planet : planets) {
-				planet.setPosition(new Point(planet.getPosition().x,
-						planet.getPosition().y - 5));
-			}
 		}
 		if(pressedKeys.contains(KeyEvent.VK_LEFT)) {
 			sun.setPosition(new Point(sun.getPosition().x - 5,
 					sun.getPosition().y));
-			ArrayList<DisplayObject> planets = sun.getChildren();
-			for(DisplayObject planet : planets) {
-				planet.setPosition(new Point(planet.getPosition().x - 5,
-						planet.getPosition().y));
-			}
 		}
 		if(pressedKeys.contains(KeyEvent.VK_RIGHT)) {
 			sun.setPosition(new Point(sun.getPosition().x + 5,
 					sun.getPosition().y));
-			ArrayList<DisplayObject> planets = sun.getChildren();
-			for(DisplayObject planet : planets) {
-				planet.setPosition(new Point(planet.getPosition().x + 5,
-						planet.getPosition().y));
-			}
 		}
 		if(pressedKeys.contains(KeyEvent.VK_A)) {
-			rotate = rotate * -1;
-			moon_rotate = moon_rotate * -1;
-			try {
-				Thread.sleep(200);
-			}
-			catch (InterruptedException e){
-				assert false;
-			}
+			sun.setRotation(sun.getRotation()+5);
 		}
 		if(pressedKeys.contains(KeyEvent.VK_S)) {
-			rotate = rotate * -1;
-			moon_rotate = moon_rotate * -1;
-			try {
-				Thread.sleep(200);
-			}
-			catch (InterruptedException e){
-				assert false;
-			}
+            sun.setRotation(sun.getRotation()-5);
 		}
 
 	}
