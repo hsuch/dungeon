@@ -240,6 +240,7 @@ public class DisplayObject {
 	 * every frame.
 	 * */
 	public void draw(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
 
 		if (displayImage != null) {
 
@@ -247,7 +248,6 @@ public class DisplayObject {
 			 * Get the graphics and apply this objects transformations
 			 * (rotation, etc.)
 			 */
-			Graphics2D g2d = (Graphics2D) g;
 			applyTransformations(g2d);
 
 			if (this.visible) {
@@ -261,11 +261,10 @@ public class DisplayObject {
                  * objects
                  */
                 reverseTransformations(g2d);
-				if(this.drawHitbox) {
-					g2d.draw(this.getHitbox());
-				}
-
             }
+		}
+		if(this.drawHitbox) {
+			g2d.draw(this.getHitbox());
 		}
 	}
 

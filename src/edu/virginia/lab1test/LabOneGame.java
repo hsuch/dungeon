@@ -18,6 +18,11 @@ public class LabOneGame extends Game{
     String soundfile = ("resources" + File.separator + "sound" + File.separator + "piano.wav");
     String soundfile_2 = ("resources" + File.separator + "sound" + File.separator + "jump.wav");
     SoundManager sound = new SoundManager();
+    int speed_x = 0;
+    int speed_y = 0;
+    int MAX_SPEED = 10;
+    int MIN_SPEED = -10;
+    int MAX_GRAV = 8;
     int score = 200;
 
 	/* Lab 3 code - initialize a sun and solar system */
@@ -25,6 +30,7 @@ public class LabOneGame extends Game{
 	AnimatedSprite player = new AnimatedSprite("Bird", new Point(0,0), new ArrayList<DisplayObject>());
 	Sprite goal = new Sprite("Goal", "planets/3.png", new ArrayList<DisplayObject>());
 	Sprite obstacle1 = new Sprite("Obstacle1", "planets/9.png", new ArrayList<DisplayObject>());
+	DisplayObject floor = new DisplayObject("floor");
 	int health = 10;
 	boolean win = false;
 
@@ -49,9 +55,13 @@ public class LabOneGame extends Game{
         goal.setPosition(new Point( 200, 200));
         obstacle1.setScaleX(0.5);
         obstacle1.setScaleY(0.5);
-        obstacle1.setPosition(new Point(100, 100));
+        obstacle1.setPosition(new Point(100, 200));
         obstacle1.setHitbox(0, 0, 60, 60);
 	    player.setHitbox(0, 0, 20, 20);
+	    floor.setHitbox(0, 0, 600, 30);
+	    floor.setPosition(new Point(0, 250));
+	    floor.toggleDrawHitbox();
+
 		/*planet1.addChild(moon1);
 		sun.addChild(planet1);
 		sun.addChild(planet2);
@@ -66,6 +76,23 @@ public class LabOneGame extends Game{
         planet1.getChild("moon1").setScaleX(.2);
 		planet1.getChild("moon1").setScaleY(.2);*/
 	}
+
+	public void addSpeedX(int speedToAdd) {
+		speed_x = speed_x + speedToAdd;
+	}
+
+	public void addSpeedY(int speedToAdd) {
+		speed_y = speed_y + speedToAdd;
+	}
+
+	public void setSpeedY(int speed) {
+		speed_y = speed;
+	}
+
+	public void bouncePlayer() {
+		speed_x = -speed_x;
+		speed_y = -speed_y;
+	}
 	
 	/**
 	 * Engine will automatically call this update method once per frame and pass to us
@@ -78,16 +105,54 @@ public class LabOneGame extends Game{
 
 		if(player.collidesWith(obstacle1)){
 			score--;
+			bouncePlayer();
 			sound.PlaySoundEffect("jump");
+		}
+
+		if(player.collidesWith(floor)) {
+			if(speed_y > 0){
+				speed_y = 0;
+			}
+			else{
+				speed_y--;
+			}
 		}
 
 		if(player.collidesWith(goal)) {
 		    this.win = true;
         }
 
+		if(speed_y < MIN_SPEED){
+			speed_y = MIN_SPEED;
+		}
+		if(speed_y > MAX_GRAV){
+			speed_y = MAX_GRAV;
+		}
+		if(speed_x < MIN_SPEED){
+			speed_x = MIN_SPEED;
+		}
+		if(speed_x > MAX_SPEED){
+			speed_x = MAX_SPEED;
+		}
+
+        player.setPosition(new Point(player.getPosition().x + speed_x, player.getPosition().y + speed_y));
+
+		if(speed_x > 0) {
+			speed_x--;
+		}
+		if(speed_x < 0) {
+			speed_x++;
+		}
+		/*if(speed_y > 0) {
+			speed_y--;
+		}
+		if(speed_y < 0) {
+			speed_y++;
+		}*/
+		speed_y++;
+
 		if (pressedKeys.contains(KeyEvent.VK_UP)){
-			player.setPosition(new Point(player.getPosition().x,
-					player.getPosition().y - 5));
+			addSpeedY(-2);
 			if(player.getTransform() == "bird") {
 				player.animate("bird");
 			}
@@ -96,8 +161,7 @@ public class LabOneGame extends Game{
 			}
 		}
 		if (pressedKeys.contains(KeyEvent.VK_DOWN)){
-			player.setPosition(new Point(player.getPosition().x,
-					player.getPosition().y + 5));
+			addSpeedY(2);
 			if(player.getTransform() == "bird") {
 				player.animate("bird");
 			}
@@ -106,8 +170,7 @@ public class LabOneGame extends Game{
 			}
 		}
 		if (pressedKeys.contains(KeyEvent.VK_LEFT)){
-			player.setPosition(new Point(player.getPosition().x - 5,
-					player.getPosition().y));
+			addSpeedX(-2);
 			if(player.getTransform() == "bird") {
 				player.animate("bird");
 			}
@@ -116,8 +179,7 @@ public class LabOneGame extends Game{
 			}
 		}
 		if (pressedKeys.contains(KeyEvent.VK_RIGHT)){
-			player.setPosition(new Point(player.getPosition().x + 5,
-					player.getPosition().y));
+			addSpeedX(2);
 			if(player.getTransform() == "bird") {
 				player.animate("bird");
 			}
@@ -291,6 +353,7 @@ public class LabOneGame extends Game{
 		if(player != null) player.drawAnimation(g);
 
 		obstacle1.draw(g);
+		floor.draw(g);
 
 		if(!win){
             goal.draw(g);
