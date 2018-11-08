@@ -1,6 +1,7 @@
 package edu.virginia.engine.display;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -212,6 +213,7 @@ public class DisplayObject {
 	public Rectangle getHitbox() {
 		return convertHitboxToGlobal(this.hitbox);
 	}
+	public void scaleHitbox(double scale) { this.hitbox.setSize(((int)(this.hitbox.width*scale)), ((int)(this.hitbox.height*scale)));}
 	public void toggleDrawHitbox() {
 		this.drawHitbox = !this.drawHitbox;
 	}
@@ -254,15 +256,14 @@ public class DisplayObject {
                         (int) (getUnscaledWidth()),
                         (int) (getUnscaledHeight()), null);
 
-                if(this.drawHitbox) {
-                	g2d.draw(this.hitbox);
-				}
-
                 /*
                  * undo the transformations so this doesn't affect other display
                  * objects
                  */
                 reverseTransformations(g2d);
+				if(this.drawHitbox) {
+					g2d.draw(this.getHitbox());
+				}
 
             }
 		}

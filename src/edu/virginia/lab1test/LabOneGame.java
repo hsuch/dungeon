@@ -1,7 +1,6 @@
 package edu.virginia.lab1test;
 
-import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ public class LabOneGame extends Game{
     String soundfile = ("resources" + File.separator + "sound" + File.separator + "piano.wav");
     String soundfile_2 = ("resources" + File.separator + "sound" + File.separator + "jump.wav");
     SoundManager sound = new SoundManager();
+    int score = 200;
 
 	/* Lab 3 code - initialize a sun and solar system */
 	/* Create a sprite object for our game. We'll use player */
@@ -45,15 +45,13 @@ public class LabOneGame extends Game{
 	    super("Lab One Test Game",500, 300);
 	    sound.LoadSoundEffect("piano", soundfile);
         sound.LoadSoundEffect("jump", soundfile_2);
-	    System.out.println((String)sound.getsoundeffects().get("piano"));
         goal.setHitbox(0, 0, 120, 120);
-        goal.toggleDrawHitbox();
         goal.setPosition(new Point( 200, 200));
         obstacle1.setScaleX(0.5);
         obstacle1.setScaleY(0.5);
         obstacle1.setPosition(new Point(100, 100));
+        obstacle1.setHitbox(0, 0, 60, 60);
 	    player.setHitbox(0, 0, 20, 20);
-	    player.toggleDrawHitbox();
 		/*planet1.addChild(moon1);
 		sun.addChild(planet1);
 		sun.addChild(planet2);
@@ -78,6 +76,11 @@ public class LabOneGame extends Game{
 		/* Make sure player is not null. Sometimes Swing can auto cause an extra frame to go before everything is initialized */
 		if(player != null) player.update(pressedKeys);
 
+		if(player.collidesWith(obstacle1)){
+			score--;
+			sound.PlaySoundEffect("jump");
+		}
+
 		if(player.collidesWith(goal)) {
 		    this.win = true;
         }
@@ -85,7 +88,6 @@ public class LabOneGame extends Game{
 		if (pressedKeys.contains(KeyEvent.VK_UP)){
 			player.setPosition(new Point(player.getPosition().x,
 					player.getPosition().y - 5));
-			sound.PlaySoundEffect("jump");
 			if(player.getTransform() == "bird") {
 				player.animate("bird");
 			}
@@ -258,6 +260,8 @@ public class LabOneGame extends Game{
 		if(pressedKeys.contains(KeyEvent.VK_A)) {
 			player.setScaleX(player.getScaleX() + 0.1);
 			player.setScaleY(player.getScaleY() + 0.1);
+			Rectangle hitbox = player.getHitbox();
+			player.setHitbox(0, 0, hitbox.width+1, hitbox.height+1);
 		}
 		if(pressedKeys.contains(KeyEvent.VK_S)) {
 			double xVar = player.getScaleX();
@@ -265,6 +269,8 @@ public class LabOneGame extends Game{
 			if(xVar - 0.1 >= 0 && yVar - 0.1 >= 0) {
 				player.setScaleX(player.getScaleX() - 0.1);
 				player.setScaleY(player.getScaleY() - 0.1);
+				Rectangle hitbox = player.getHitbox();
+				player.setHitbox(0, 0, hitbox.width-1, hitbox.height-1);
 			}
 		}
 
@@ -277,6 +283,9 @@ public class LabOneGame extends Game{
 	@Override
 	public void draw(Graphics g){
 		super.draw(g);
+		Graphics2D g2d = (Graphics2D) g;
+		String scorestring = "Score: "+score;
+		g2d.drawString(scorestring, 100, 30);
 		
 		/* Same, just check for null in case a frame gets thrown in before player is initialized */
 		if(player != null) player.drawAnimation(g);
@@ -286,6 +295,9 @@ public class LabOneGame extends Game{
 		if(!win){
             goal.draw(g);
         }
+        if(win){
+        	g2d.drawString("You win!", 200, 100);
+		}
 	}
 
 	/**
