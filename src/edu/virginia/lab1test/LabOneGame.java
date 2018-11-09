@@ -15,7 +15,7 @@ public class LabOneGame extends Game{
 
 	/* Create a sprite object for our game. We'll use mario */
 	AnimatedSprite mario = new AnimatedSprite("Mario", new Point(0,0), new ArrayList<DisplayObject>());
-    String soundfile = ("resources" + File.separator + "sound" + File.separator + "piano.wav");
+    String soundfile = ("resources" + File.separator + "sound" + File.separator + "game.wav");
     String soundfile_2 = ("resources" + File.separator + "sound" + File.separator + "jump.wav");
     SoundManager sound = new SoundManager();
     int speed_x = 0;
@@ -49,7 +49,7 @@ public class LabOneGame extends Game{
 	 * */
 	public LabOneGame() {
 	    super("Lab One Test Game",500, 300);
-	    sound.LoadSoundEffect("piano", soundfile);
+	    sound.LoadSoundEffect("game", soundfile);
         sound.LoadSoundEffect("jump", soundfile_2);
         goal.setHitbox(0, 0, 120, 120);
         goal.setPosition(new Point( 200, 200));
@@ -120,6 +120,7 @@ public class LabOneGame extends Game{
 
 		if(player.collidesWith(goal)) {
 		    this.win = true;
+			sound.PlaySoundEffect("game");
         }
 
 		if(speed_y < MIN_SPEED){

@@ -23,7 +23,6 @@ public class SoundManager {
 
     public void PlaySoundEffect(String id) {
         String file = (String)soundeffects.get(id);
-        System.out.println(file);
         File sound_file = new File(file);
         try {
             // Open an audio input stream.
