@@ -41,4 +41,24 @@ public class SoundManager {
         }
     }
 
+    public void PlayMusic(String id) {
+        String file = (String)soundeffects.get(id);
+        File sound_file = new File(file);
+        try {
+            // Open an audio input stream.
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(sound_file);
+            // Get a sound clip resource.
+            Clip clip = AudioSystem.getClip();
+            // Open audio clip and load samples from the audio input stream.
+            clip.open(audioIn);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

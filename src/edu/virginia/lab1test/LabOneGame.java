@@ -33,6 +33,7 @@ public class LabOneGame extends Game{
 	DisplayObject floor = new DisplayObject("floor");
 	int health = 10;
 	boolean win = false;
+	boolean music = false;
 
     /* Lab 3 code - initialize a sun and solar system */
     /*Sprite moon1 = new Sprite("moon1","planets/3.png", new ArrayList<DisplayObject>());
@@ -120,7 +121,10 @@ public class LabOneGame extends Game{
 
 		if(player.collidesWith(goal)) {
 		    this.win = true;
-			sound.PlaySoundEffect("game");
+		    if(music == false) {
+				sound.PlayMusic("game");
+				music = true;
+			}
         }
 
 		if(speed_y < MIN_SPEED){
