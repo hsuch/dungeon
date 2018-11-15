@@ -17,6 +17,7 @@ public class LabOneGame extends Game{
 	AnimatedSprite mario = new AnimatedSprite("Mario", new Point(0,0), new ArrayList<DisplayObject>());
     String soundfile = ("resources" + File.separator + "sound" + File.separator + "game.wav");
     String soundfile_2 = ("resources" + File.separator + "sound" + File.separator + "jump.wav");
+	String soundfile_pacman = ("resources" + File.separator + "sound" + File.separator + "pacman.wav");
     SoundManager sound = new SoundManager();
     int speed_x = 0;
     int speed_y = 0;
@@ -52,6 +53,7 @@ public class LabOneGame extends Game{
 	    super("Lab One Test Game",500, 300);
 	    sound.LoadSoundEffect("game", soundfile);
         sound.LoadSoundEffect("jump", soundfile_2);
+		sound.LoadSoundEffect("pacman", soundfile_pacman);
         goal.setHitbox(0, 0, 120, 120);
         goal.setPosition(new Point( 200, 200));
         obstacle1.setScaleX(0.5);
@@ -62,6 +64,7 @@ public class LabOneGame extends Game{
 	    floor.setHitbox(0, 0, 600, 30);
 	    floor.setPosition(new Point(0, 250));
 	    floor.toggleDrawHitbox();
+		sound.PlaySoundEffect("pacman");
 
 		/*planet1.addChild(moon1);
 		sun.addChild(planet1);
