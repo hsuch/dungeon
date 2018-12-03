@@ -1,1 +1,2 @@
-# cs209_lab1
+# dunge%n
+A proof-of-concept educational math game coded in Java
