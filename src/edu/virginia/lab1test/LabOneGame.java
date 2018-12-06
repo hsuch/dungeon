@@ -47,7 +47,7 @@ public class LabOneGame extends Game{
     int MAX_GRAV = 8;
 
 	/* Create player */
-	AnimatedSprite player = new AnimatedSprite("Bird", new Point(0,0), new ArrayList<DisplayObject>());
+	AnimatedSprite player = new Player("Player");
 	Sprite goal = new Sprite("Goal", "planets/3.png", new ArrayList<DisplayObject>());
 	Sprite obstacle1 = new Sprite("Obstacle1", "planets/9.png", new ArrayList<DisplayObject>());
 	DisplayObject floor = new DisplayObject("floor");
@@ -146,8 +146,8 @@ public class LabOneGame extends Game{
 		if(speed_y < MIN_SPEED){
 			speed_y = MIN_SPEED;
 		}
-		if(speed_y > MAX_GRAV){
-			speed_y = MAX_GRAV;
+		if(speed_y > MAX_SPEED){
+			speed_y = MAX_SPEED;
 		}
 		if(speed_x < MIN_SPEED){
 			speed_x = MIN_SPEED;
@@ -164,51 +164,37 @@ public class LabOneGame extends Game{
 		if(speed_x < 0) {
 			speed_x++;
 		}
-		/*if(speed_y > 0) {
+		if(speed_y > 0) {
 			speed_y--;
 		}
 		if(speed_y < 0) {
 			speed_y++;
-		}*/
-		speed_y++;
+		}
 
 		if (pressedKeys.contains(KeyEvent.VK_UP)){
 			addSpeedY(-2);
-			if(player.getTransform() == "bird") {
-				player.animate("bird");
-			}
-			else {
-				player.animate("playerspin");
-			}
+			player.animate("playermove");
+			return;
 		}
 		if (pressedKeys.contains(KeyEvent.VK_DOWN)){
 			addSpeedY(2);
-			if(player.getTransform() == "bird") {
-				player.animate("bird");
-			}
-			else {
-				player.animate("playerspin");
-			}
+			player.animate("playermove");
+			return;
 		}
 		if (pressedKeys.contains(KeyEvent.VK_LEFT)){
 			addSpeedX(-2);
-			if(player.getTransform() == "bird") {
-				player.animate("bird");
-			}
-			else {
-				player.animate("playerspin");
-			}
+			player.animate("playermove");
+			return;
 		}
 		if (pressedKeys.contains(KeyEvent.VK_RIGHT)){
 			addSpeedX(2);
-			if(player.getTransform() == "bird") {
-				player.animate("bird");
-			}
-			else {
-				player.animate("playerspin");
-			}
+			player.animate("playermove");
+			return;
 		}
-		if(pressedKeys.contains(KeyEvent.VK_U)) {
+		player.stopAnimation();
+
+
+		/*if(pressedKeys.contains(KeyEvent.VK_U)) {
 			if(player.getIsAnimated()) {
 				player.stopAnimation();
 				player.setIsAnimated(false);
@@ -229,133 +215,8 @@ public class LabOneGame extends Game{
 					assert false;
 				}
 			}
-		}
-		if(pressedKeys.contains(KeyEvent.VK_T)) {
-			if(player.getTransform() == "bird") {
-				player.setTransform("playerspin");
-				player.animate("playerspin");
-				try {
-					Thread.sleep(200);
-				}
-				catch (InterruptedException e){
-					assert false;
-				}
-			}
-			else {
-				player.setTransform("bird");
-				player.animate("bird");
-				try {
-					Thread.sleep(200);
+		}*/
 
-				}
-				catch (InterruptedException e){
-					assert false;
-				}
-			}
-		}
-		if(pressedKeys.contains(KeyEvent.VK_M)) {
-			if(player.getAnimationSpeed() >= 0) {
-				player.setAnimationSpeed(player.getAnimationSpeed()-5);
-			}
-		}
-		if(pressedKeys.contains(KeyEvent.VK_N)) {
-			if (player.getAnimationSpeed() <= 100) {
-				player.setAnimationSpeed(player.getAnimationSpeed() + 5);
-			}
-		}
-		if(pressedKeys.contains(KeyEvent.VK_I)) {
-			player.setPivotPoint(new Point(player.getPivotPoint().x - 5,
-					player.getPivotPoint().y));
-			if(player.getTransform() == "bird") {
-				player.animate("bird");
-			}
-			else {
-				player.animate("playerspin");
-			}
-		}
-		if(pressedKeys.contains(KeyEvent.VK_K)){
-			player.setPivotPoint(new Point(player.getPivotPoint().x + 5,
-					player.getPivotPoint().y));
-			if(player.getTransform() == "bird") {
-				player.animate("bird");
-			}
-			else {
-				player.animate("playerspin");
-			}
-		}
-		if(pressedKeys.contains(KeyEvent.VK_J)){
-			player.setPivotPoint(new Point(player.getPivotPoint().x,
-					player.getPivotPoint().y - 5));
-			if(player.getTransform() == "bird") {
-				player.animate("bird");
-			}
-			else {
-				player.animate("playerspin");
-			}
-		}
-		if(pressedKeys.contains(KeyEvent.VK_L)){
-			player.setPivotPoint(new Point(player.getPivotPoint().x,
-					player.getPivotPoint().y + 5));
-			if(player.getTransform() == "bird") {
-				player.animate("bird");
-			}
-			else {
-				player.animate("playerspin");
-			}
-		}
-
-		if(pressedKeys.contains(KeyEvent.VK_W)) {
-			player.setRotation(player.getRotation() + 10);
-		}
-		if(pressedKeys.contains(KeyEvent.VK_Q)) {
-			player.setRotation(player.getRotation() - 10);
-		}
-		if (pressedKeys.contains(KeyEvent.VK_V)) {
-			if (player.getVisible()) {
-				player.setVisible(false);
-				try {
-					Thread.sleep(200);
-				}
-				catch (InterruptedException e){
-					assert false;
-				}
-			}
-			else {
-				player.setVisible(true);
-				try {
-					Thread.sleep(200);
-				}
-				catch (InterruptedException e){
-					assert false;
-				}
-			}
-		}
-		if(pressedKeys.contains(KeyEvent.VK_Z)) {
-			if (player.getAlpha() < 1.0f) {
-				player.setAlpha(player.getAlpha() + 0.1f);
-			}
-		}
-		if(pressedKeys.contains(KeyEvent.VK_X)) {
-			if ((player.getAlpha() - 0.1f) > 0.0f) {
-				player.setAlpha(player.getAlpha() - 0.1f);
-			}
-		}
-		if(pressedKeys.contains(KeyEvent.VK_A)) {
-			player.setScaleX(player.getScaleX() + 0.1);
-			player.setScaleY(player.getScaleY() + 0.1);
-			Rectangle hitbox = player.getHitbox();
-			player.setHitbox(0, 0, hitbox.width+1, hitbox.height+1);
-		}
-		if(pressedKeys.contains(KeyEvent.VK_S)) {
-			double xVar = player.getScaleX();
-			double yVar = player.getScaleY();
-			if(xVar - 0.1 >= 0 && yVar - 0.1 >= 0) {
-				player.setScaleX(player.getScaleX() - 0.1);
-				player.setScaleY(player.getScaleY() - 0.1);
-				Rectangle hitbox = player.getHitbox();
-				player.setHitbox(0, 0, hitbox.width-1, hitbox.height-1);
-			}
-		}
 
 	}
 	

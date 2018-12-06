@@ -38,8 +38,7 @@ public class AnimatedSprite extends Sprite {
         super.setImage(frames.get(0));
 
         // Initialize animations
-        this.animations.add(new Animation("bird", 0, 7));
-        this.animations.add(new Animation("mariospin", 8, 10));
+        this.animations.add(new Animation("playermove", 0, 1));
     }
 
     public void initGameClock() {
@@ -58,17 +57,8 @@ public class AnimatedSprite extends Sprite {
     }
 
     public void importSprites() {
-        this.frames.add(super.readImage("0000.png"));
-        this.frames.add(super.readImage("0001.png"));
-        this.frames.add(super.readImage("0002.png"));
-        this.frames.add(super.readImage("0003.png"));
-        this.frames.add(super.readImage("0004.png"));
-        this.frames.add(super.readImage("0005.png"));
-        this.frames.add(super.readImage("0006.png"));
-        this.frames.add(super.readImage("0007.png"));
-        this.frames.add(super.readImage("mario1.png"));
-        this.frames.add(super.readImage("mario2.png"));
-        this.frames.add(super.readImage("mario3.png"));
+        this.frames.add(super.readImage("player1.png"));
+        this.frames.add(super.readImage("player2.png"));
     }
 
     public void animate(Animation anim) {
