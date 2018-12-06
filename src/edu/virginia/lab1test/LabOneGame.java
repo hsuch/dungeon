@@ -13,21 +13,40 @@ import edu.virginia.engine.display.*;
  * */
 public class LabOneGame extends Game{
 
-	/* Create a sprite object for our game. We'll use mario */
-	AnimatedSprite mario = new AnimatedSprite("Mario", new Point(0,0), new ArrayList<DisplayObject>());
-    String soundfile = ("resources" + File.separator + "sound" + File.separator + "game.wav");
-    String soundfile_2 = ("resources" + File.separator + "sound" + File.separator + "jump.wav");
+	/* Create level arrays */
+	String[][] level1 = {
+			{"+2", "#", "+5"},
+			{"-1", "+7", "#"},
+			{"#", "#", "-12"}
+	};
+	String[][] level2 = {
+			{"+5", "#", "+1"},
+			{"#", "-10", "#"},
+			{"x2", "#", "+3"}
+	};
+	String[][] level3 = {
+			{"+5", "#", "x3"},
+			{"-2", "x2", "#"},
+			{"#", "+1", "#"}
+	};
+
+	String[][][] levels = {level1, level2, level3};
+
+	/* Initialize sounds */
+	String soundfile = ("resources" + File.separator + "sound" + File.separator + "game.wav");
+	String soundfile_2 = ("resources" + File.separator + "sound" + File.separator + "jump.wav");
 	String soundfile_pacman = ("resources" + File.separator + "sound" + File.separator + "pacman.wav");
-    SoundManager sound = new SoundManager();
+	SoundManager sound = new SoundManager();
+
+
+    /* Game variables */
     int speed_x = 0;
     int speed_y = 0;
     int MAX_SPEED = 10;
     int MIN_SPEED = -10;
     int MAX_GRAV = 8;
-    int score = 200;
 
-	/* Lab 3 code - initialize a sun and solar system */
-	/* Create a sprite object for our game. We'll use player */
+	/* Create player */
 	AnimatedSprite player = new AnimatedSprite("Bird", new Point(0,0), new ArrayList<DisplayObject>());
 	Sprite goal = new Sprite("Goal", "planets/3.png", new ArrayList<DisplayObject>());
 	Sprite obstacle1 = new Sprite("Obstacle1", "planets/9.png", new ArrayList<DisplayObject>());
@@ -35,16 +54,7 @@ public class LabOneGame extends Game{
 	int health = 10;
 	boolean win = false;
 	boolean music = false;
-
-    /* Lab 3 code - initialize a sun and solar system */
-    /*Sprite moon1 = new Sprite("moon1","planets/3.png", new ArrayList<DisplayObject>());
-    Sprite planet1 = new Sprite("planet1", "planets/1.png", new ArrayList<DisplayObject>());
-    Sprite planet2 = new Sprite("planet2", "planets/2.png", new ArrayList<DisplayObject>());
-    Sprite sun = new Sprite("sun", "planets/12.png", new ArrayList<DisplayObject>());
-    Point planet1Center = new Point(60, 60);
-
-    int rotate = 1;
-    int moon_rotate = 2;*/
+	boolean resetBoard = false;
 
 	/**
 	 * Constructor. See constructor in Game.java for details on the parameters given
@@ -105,10 +115,13 @@ public class LabOneGame extends Game{
 	@Override
 	public void update(ArrayList<Integer> pressedKeys){
 		/* Make sure player is not null. Sometimes Swing can auto cause an extra frame to go before everything is initialized */
+		if(resetBoard) {
+			/* initialize and replace all enchantments back where they belong */
+			resetBoard = false;
+		}
 		if(player != null) player.update(pressedKeys);
 
 		if(player.collidesWith(obstacle1)){
-			score--;
 			bouncePlayer();
 			sound.PlaySoundEffect("jump");
 		}
@@ -354,8 +367,6 @@ public class LabOneGame extends Game{
 	public void draw(Graphics g){
 		super.draw(g);
 		Graphics2D g2d = (Graphics2D) g;
-		String scorestring = "Score: "+score;
-		g2d.drawString(scorestring, 100, 30);
 		
 		/* Same, just check for null in case a frame gets thrown in before player is initialized */
 		if(player != null) player.drawAnimation(g);
