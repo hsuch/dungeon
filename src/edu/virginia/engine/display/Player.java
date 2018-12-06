@@ -15,7 +15,10 @@ public class Player extends AnimatedSprite {
         /* TODO */
     }
 
-    public void draw() {
-
+    public void drawAnimation(Graphics g) {
+        super.drawAnimation(g);
+        applyTransformations((Graphics2D)g);
+        g.drawString(Integer.toString(number), 35, 30);
+        reverseTransformations((Graphics2D)g);
     }
 }

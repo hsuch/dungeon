@@ -31,6 +31,9 @@ public class LabOneGame extends Game{
 	};
 
 	String[][][] levels = {level1, level2, level3};
+	int currentLevel = 0;
+
+	Enchantment[][] enchantments =  new Enchantment[3][3];
 
 	/* Initialize sounds */
 	String soundfile = ("resources" + File.separator + "sound" + File.separator + "game.wav");
@@ -48,32 +51,20 @@ public class LabOneGame extends Game{
 
 	/* Create player */
 	AnimatedSprite player = new Player("Player");
-	Sprite goal = new Sprite("Goal", "planets/3.png", new ArrayList<DisplayObject>());
-	Sprite obstacle1 = new Sprite("Obstacle1", "planets/9.png", new ArrayList<DisplayObject>());
 	DisplayObject floor = new DisplayObject("floor");
-	int health = 10;
-	boolean win = false;
-	boolean music = false;
-	boolean resetBoard = false;
+
+	boolean resetBoard = true;
+	int boardOffsetX = 125;
+	int boardOffsetY = 25;
 
 	/**
 	 * Constructor. See constructor in Game.java for details on the parameters given
 	 * */
 	public LabOneGame() {
-	    super("Lab One Test Game",500, 300);
+	    super("dunge%n",500, 300);
 	    sound.LoadSoundEffect("game", soundfile);
         sound.LoadSoundEffect("jump", soundfile_2);
 		sound.LoadSoundEffect("pacman", soundfile_pacman);
-        goal.setHitbox(0, 0, 120, 120);
-        goal.setPosition(new Point( 200, 200));
-        obstacle1.setScaleX(0.5);
-        obstacle1.setScaleY(0.5);
-        obstacle1.setPosition(new Point(100, 200));
-        obstacle1.setHitbox(0, 0, 60, 60);
-	    player.setHitbox(0, 0, 20, 20);
-	    floor.setHitbox(0, 0, 600, 30);
-	    floor.setPosition(new Point(0, 250));
-	    floor.toggleDrawHitbox();
 		sound.PlaySoundEffect("pacman");
 
 		/*planet1.addChild(moon1);
@@ -117,14 +108,25 @@ public class LabOneGame extends Game{
 		/* Make sure player is not null. Sometimes Swing can auto cause an extra frame to go before everything is initialized */
 		if(resetBoard) {
 			/* initialize and replace all enchantments back where they belong */
+			for (int i = 0; i < 3; i++){
+				for(int j = 0; j < 3; j++){
+					if(levels[currentLevel][i][j] != "#") {
+						Enchantment newE = new Enchantment(levels[currentLevel][i][j]);
+						newE.setPosition(new Point(i * 75 + boardOffsetX, j * 75 + boardOffsetY));
+						enchantments[i][j] = newE;
+					}
+					else{
+						enchantments[i][j] = null;
+					}
+				}
+			}
 			resetBoard = false;
 		}
 		if(player != null) player.update(pressedKeys);
 
-		if(player.collidesWith(obstacle1)){
+		/*if(player.collidesWith(obstacle1)){
 			bouncePlayer();
 			sound.PlaySoundEffect("jump");
-		}
 
 		if(player.collidesWith(floor)) {
 			if(speed_y > 0){
@@ -134,14 +136,7 @@ public class LabOneGame extends Game{
 				speed_y--;
 			}
 		}
-
-		if(player.collidesWith(goal)) {
-		    this.win = true;
-		    if(music == false) {
-				sound.PlayMusic("game");
-				music = true;
-			}
-        }
+		*/
 
 		if(speed_y < MIN_SPEED){
 			speed_y = MIN_SPEED;
@@ -232,14 +227,12 @@ public class LabOneGame extends Game{
 		/* Same, just check for null in case a frame gets thrown in before player is initialized */
 		if(player != null) player.drawAnimation(g);
 
-		obstacle1.draw(g);
-		floor.draw(g);
-
-		if(!win){
-            goal.draw(g);
-        }
-        if(win){
-        	g2d.drawString("You win!", 200, 100);
+		for (Enchantment[] row : enchantments) {
+			for (Enchantment e : row) {
+				if(e != null) {
+					e.draw(g);
+				}
+			}
 		}
 	}
 
