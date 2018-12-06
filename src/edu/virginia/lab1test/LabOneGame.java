@@ -26,7 +26,7 @@ public class LabOneGame extends Game{
 	};
 	String[][] level3 = {
 			{"+5", "#", "x3"},
-			{"-2", "x2", "#"},
+			{"#", "x2", "-2"},
 			{"#", "+1", "#"}
 	};
 
@@ -34,6 +34,12 @@ public class LabOneGame extends Game{
 	int currentLevel = 0;
 
 	Enchantment[][] enchantments =  new Enchantment[3][3];
+
+	/* Create tile array */
+	Sprite[][] tiles = new Sprite[3][3];
+
+	/* Initialize goal */
+	Sprite goal = new Sprite("goal", "goal.png", new ArrayList<DisplayObject>());
 
 	/* Initialize sounds */
 	String soundfile = ("resources" + File.separator + "sound" + File.separator + "game.wav");
@@ -45,15 +51,16 @@ public class LabOneGame extends Game{
     /* Game variables */
     int speed_x = 0;
     int speed_y = 0;
-    int MAX_SPEED = 10;
-    int MIN_SPEED = -10;
-    int MAX_GRAV = 8;
+    int MAX_SPEED = 5;
+    int MIN_SPEED = -5;
 
 	/* Create player */
-	AnimatedSprite player = new Player("Player");
+	Player player = new Player("Player");
 	DisplayObject floor = new DisplayObject("floor");
 
 	boolean resetBoard = true;
+	int playerStartingNumber = 0;
+	boolean win = false;
 	int boardOffsetX = 125;
 	int boardOffsetY = 25;
 
@@ -67,19 +74,18 @@ public class LabOneGame extends Game{
 		sound.LoadSoundEffect("pacman", soundfile_pacman);
 		sound.PlaySoundEffect("pacman");
 
-		/*planet1.addChild(moon1);
-		sun.addChild(planet1);
-		sun.addChild(planet2);
-	    sun.setPosition(new Point(200, 100));
-        planet1.setPosition(new Point(100, 100));
-        sun.setPivotPoint(new Point(60, 60));
-        //planet1.getChild("moon1").setPosition(new Point(25, 25));
-        sun.getChild("planet1").setScaleX(.5);
-        sun.getChild("planet1").setScaleY(.5);
-        sun.getChild("planet2").setScaleX(.3);
-        sun.getChild("planet2").setScaleY(.3);
-        planet1.getChild("moon1").setScaleX(.2);
-		planet1.getChild("moon1").setScaleY(.2);*/
+		/* Initialize tiles */
+		for (int i = 0; i < 3; i++){
+			for(int j = 0; j < 3; j++){
+				Sprite newTile = new Sprite("tile"+i+j, "tile.png", new ArrayList<DisplayObject>());
+				newTile.setPosition(new Point(i * 75 + boardOffsetX, j * 75 + boardOffsetY));
+				tiles[i][j] = newTile;
+			}
+		}
+
+		/* Initialize goal position */
+		goal.setPosition(new Point(3 * 75 + boardOffsetX, 75 + boardOffsetY));
+		goal.setHitbox(20, 10, 30, 60);
 	}
 
 	public void addSpeedX(int speedToAdd) {
@@ -120,23 +126,50 @@ public class LabOneGame extends Game{
 					}
 				}
 			}
+			player.setPosition(new Point(boardOffsetX, 75+boardOffsetY));
+			player.setNumber(playerStartingNumber);
 			resetBoard = false;
 		}
 		if(player != null) player.update(pressedKeys);
 
-		/*if(player.collidesWith(obstacle1)){
-			bouncePlayer();
-			sound.PlaySoundEffect("jump");
-
-		if(player.collidesWith(floor)) {
-			if(speed_y > 0){
-				speed_y = 0;
+		if(player.collidesWith(goal)) {
+			if (currentLevel != 2) {
+				if (player.getNumber() > 10) {
+					currentLevel++;
+					playerStartingNumber = player.getNumber();
+				}
+				resetBoard = true;
 			}
-			else{
-				speed_y--;
+			else {
+				if (player.getNumber() > 7 && player.getNumber()%2 == 1) {
+					win = true;
+				}
+				else {
+					resetBoard = true;
+				}
 			}
 		}
-		*/
+
+		for(Enchantment[] row : enchantments){
+			for(Enchantment e : row){
+				if(e != null) {
+					if (player.collidesWith(e)) {
+						char op = e.getOperation();
+						int n = e.getNumber();
+						if (op == '+') {
+							player.setNumber(player.getNumber() + n);
+						} else if (op == '-') {
+							player.setNumber(player.getNumber() - n);
+						} else if (op == 'x') {
+							player.setNumber(player.getNumber() * n);
+						} else {
+							player.setNumber(player.getNumber() / n);
+						}
+						e.setPosition(new Point(500, 300));
+					}
+				}
+			}
+		}
 
 		if(speed_y < MIN_SPEED){
 			speed_y = MIN_SPEED;
@@ -223,9 +256,14 @@ public class LabOneGame extends Game{
 	public void draw(Graphics g){
 		super.draw(g);
 		Graphics2D g2d = (Graphics2D) g;
-		
-		/* Same, just check for null in case a frame gets thrown in before player is initialized */
-		if(player != null) player.drawAnimation(g);
+
+		for (Sprite[] row: tiles){
+			for(Sprite tile : row){
+				tile.draw(g);
+			}
+		}
+
+		goal.draw(g);
 
 		for (Enchantment[] row : enchantments) {
 			for (Enchantment e : row) {
@@ -234,6 +272,9 @@ public class LabOneGame extends Game{
 				}
 			}
 		}
+
+		/* Same, just check for null in case a frame gets thrown in before player is initialized */
+		if(player != null) player.drawAnimation(g);
 	}
 
 	/**

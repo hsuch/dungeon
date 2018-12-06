@@ -8,7 +8,14 @@ public class Player extends AnimatedSprite {
 
     public Player(String id){
         super(id, new Point(200, 200), new ArrayList<DisplayObject>());
+        this.setHitbox(36, 36, 2, 2);
+    }
 
+    public int getNumber(){
+        return this.number;
+    }
+    public void setNumber(int n) {
+        this.number = n;
     }
 
     public void addCustomization(){

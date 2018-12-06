@@ -23,13 +23,22 @@ public class Enchantment extends Sprite {
             this.setImage("division.png");
         }
         this.setHitbox(0, 0, 75, 75);
+        this.toggleDrawHitbox();
+    }
+
+    public char getOperation(){
+        return this.operation;
+    }
+
+    public int getNumber(){
+        return this.number;
     }
 
     public void draw(Graphics g) {
         super.draw(g);
 
         applyTransformations((Graphics2D) g);
-        g.drawString(Integer.toString(number), 37, 37);
+        g.drawString(Integer.toString(number), 35, 39);
         reverseTransformations((Graphics2D) g);
     }
 }
