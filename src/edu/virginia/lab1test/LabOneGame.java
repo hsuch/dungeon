@@ -42,9 +42,10 @@ public class LabOneGame extends Game{
 	Sprite goal = new Sprite("goal", "goal.png", new ArrayList<DisplayObject>());
 
 	/* Initialize sounds */
-	String soundfile = ("resources" + File.separator + "sound" + File.separator + "game.wav");
+	String soundfile = ("resources" + File.separator + "sound" + File.separator + "no.wav");
 	String soundfile_2 = ("resources" + File.separator + "sound" + File.separator + "jump.wav");
 	String soundfile_pacman = ("resources" + File.separator + "sound" + File.separator + "pacman.wav");
+	String soundfile_levelclear = ("resources" + File.separator + "sound" + File.separator + "levelclear.wav");
 	SoundManager sound = new SoundManager();
 
 
@@ -59,6 +60,7 @@ public class LabOneGame extends Game{
 	DisplayObject floor = new DisplayObject("floor");
 
 	boolean resetBoard = true;
+	boolean levelCleared = false;
 	int playerStartingNumber = 0;
 	boolean win = false;
 	int boardOffsetX = 125;
@@ -69,7 +71,8 @@ public class LabOneGame extends Game{
 	 * */
 	public LabOneGame() {
 	    super("dunge%n",500, 300);
-	    sound.LoadSoundEffect("game", soundfile);
+	    sound.LoadSoundEffect("no", soundfile);
+	    sound.LoadSoundEffect("levelclear", soundfile_levelclear);
         sound.LoadSoundEffect("jump", soundfile_2);
 		sound.LoadSoundEffect("pacman", soundfile_pacman);
 		sound.PlaySoundEffect("pacman");
@@ -133,18 +136,37 @@ public class LabOneGame extends Game{
 		if(player != null) player.update(pressedKeys);
 
 		if(player.collidesWith(goal)) {
-			if (currentLevel != 2) {
+			if (currentLevel == 0) {
 				if (player.getNumber() > 10) {
 					currentLevel++;
 					playerStartingNumber = player.getNumber();
+					sound.PlaySoundEffect("levelclear");
+					levelCleared = true;
+				}
+				else {
+					sound.PlaySoundEffect("no");
 				}
 				resetBoard = true;
 			}
-			else {
-				if (player.getNumber() > 7 && player.getNumber()%2 == 1) {
-					win = true;
+			else if (currentLevel == 1){
+				if (player.getNumber() < 7 && player.getNumber()%2 == 1) {
+					currentLevel++;
+					playerStartingNumber = player.getNumber();
+					sound.PlaySoundEffect("levelclear");
+					levelCleared = true;
 				}
 				else {
+					sound.PlaySoundEffect("no");
+				}
+				resetBoard = true;
+			}
+			else{
+				if (player.getNumber() > 15 && player.getNumber()%2 == 0){
+					win = true;
+					sound.PlaySoundEffect("levelclear");
+				}
+				else {
+					sound.PlaySoundEffect("no");
 					resetBoard = true;
 				}
 			}
@@ -154,6 +176,7 @@ public class LabOneGame extends Game{
 			for(Enchantment e : row){
 				if(e != null) {
 					if (player.collidesWith(e)) {
+						sound.PlaySoundEffect("jump");
 						char op = e.getOperation();
 						int n = e.getNumber();
 						if (op == '+') {
@@ -219,6 +242,9 @@ public class LabOneGame extends Game{
 			player.animate("playermove");
 			return;
 		}
+		if (pressedKeys.contains(KeyEvent.VK_C)){
+			levelCleared = false;
+		}
 		player.stopAnimation();
 
 
@@ -257,24 +283,67 @@ public class LabOneGame extends Game{
 		super.draw(g);
 		Graphics2D g2d = (Graphics2D) g;
 
-		for (Sprite[] row: tiles){
-			for(Sprite tile : row){
-				tile.draw(g);
-			}
-		}
-
-		goal.draw(g);
-
-		for (Enchantment[] row : enchantments) {
-			for (Enchantment e : row) {
-				if(e != null) {
-					e.draw(g);
+		if(!win && !levelCleared) {
+			for (Sprite[] row: tiles){
+				for(Sprite tile : row){
+					tile.draw(g);
 				}
 			}
+
+			goal.draw(g);
+
+			for (Enchantment[] row : enchantments) {
+				for (Enchantment e : row) {
+					if(e != null) {
+						e.draw(g);
+					}
+				}
+			}
+
+			g2d.drawString("Level " + (currentLevel+1),75 * 4 + boardOffsetX, boardOffsetY);
+			g2d.drawString("Escape the", 30, 30);
+			g2d.drawString("dungeon!", 30, 40);
+			g2d.drawString("Match your", 30, 50);
+			g2d.drawString("number to", 30, 60);
+			g2d.drawString("the door!", 30, 70);
+
+			if (currentLevel == 0) {
+				g2d.drawString("> 10", 75 * 3 + boardOffsetX + 30, 60 + boardOffsetY);
+			}
+			else if(currentLevel == 1){
+				g2d.drawString("< 7 AND odd", 75 * 3 + boardOffsetX + 5, 60 + boardOffsetY);
+			}
+			else {
+				g2d.drawString("> 15 AND even", 75 * 3 + boardOffsetX + 5, 60 + boardOffsetY);
+			}
+			/* check for null in case a frame gets thrown in before player is initialized */
+			if(player != null) player.drawAnimation(g);
+		}
+		else if (win){
+			/* add hat */
+			player.addCustomization();
+
+			/* move all board pieces out of player reach */
+			goal.setPosition(new Point(500, 300));
+			for (Enchantment[] row : enchantments) {
+				for (Enchantment e : row) {
+					if(e != null) {
+						e.setPosition(new Point(500, 300));
+					}
+				}
+			}
+
+			/* display messages */
+			g2d.drawString("You win!", 75 * 1 + boardOffsetX + 5, 50 + boardOffsetY);
+			g2d.drawString("New customization obtained!", 75 * 1 + boardOffsetX + 5, 60 + boardOffsetY);
+			/* check for null in case a frame gets thrown in before player is initialized */
+			if(player != null) player.drawAnimation(g);
+		}
+		else{
+			g2d.drawString("Level cleared!", 75 * 1 + boardOffsetX + 5, 50 + boardOffsetY);
+			g2d.drawString("Press c to continue.", 75 * 1 + boardOffsetX + 5, 60 + boardOffsetY);
 		}
 
-		/* Same, just check for null in case a frame gets thrown in before player is initialized */
-		if(player != null) player.drawAnimation(g);
 	}
 
 	/**

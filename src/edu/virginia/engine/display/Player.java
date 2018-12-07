@@ -19,7 +19,9 @@ public class Player extends AnimatedSprite {
     }
 
     public void addCustomization(){
-        /* TODO */
+        DisplayObject customization = new DisplayObject("bird", "bird.png");
+        customization.setPosition(new Point(34, -6));
+        this.addChild(customization);
     }
 
     public void drawAnimation(Graphics g) {
